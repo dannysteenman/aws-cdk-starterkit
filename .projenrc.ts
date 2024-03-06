@@ -5,11 +5,11 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.130.0',
   defaultReleaseBranch: 'main',
   name: 'aws-cdk-starterkit',
+  description: 'Create and deploy an AWS CDK app on your AWS account in less than 5 minutes!',
   projenrcTs: true,
   packageManager: NodePackageManager.NPM,
 
   // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // devDeps: [],             /* Build dependencies for this module. */
   // packageName: undefined,  /* The "name" in package.json. */
 });

@@ -1,5 +1,6 @@
 {
   "name": "aws-cdk-starterkit",
+  "description": "Create and deploy an AWS CDK app on your AWS account in less than 5 minutes!",
   "scripts": {
     "build": "npx projen build",
     "bundle": "npx projen bundle",
