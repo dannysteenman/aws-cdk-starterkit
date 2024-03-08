@@ -12,7 +12,7 @@ const awsEnvironment = {
 const app = new cdk.App();
 
 // Add GitHub OpenID Connect support and create an IAM role for GitHub
-new GitHubOIDCStack(app, `GitHubSupportStack-${environment}`, {
+new GitHubOIDCStack(app, `GitHubOIDCStack-${environment}`, {
   env: awsEnvironment,
 });
 
