@@ -7,7 +7,7 @@ export interface MyStackProps extends cdk.StackProps {
    *
    * @default - If not given, it will throw out an error
    */
-  readonly environment: string;
+  readonly environment?: string;
 }
 
 export class MyStack extends cdk.Stack {

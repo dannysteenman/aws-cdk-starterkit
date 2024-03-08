@@ -13,8 +13,8 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   defaultReleaseBranch: 'main',
   packageManager: NodePackageManager.NPM,
   projenrcTs: true,
-  // deps: [],                /* Runtime dependencies of this module. */
-  devDeps: ['aws-cdk-github-oidc'] /* Build dependencies for this module. */,
+  deps: ['aws-cdk-github-oidc'] /* Runtime dependencies of this module. */,
+  // devDeps: []                /* Build dependencies for this module. */,
 });
 
 /* Add npm run commands that you can use to deploy to each environment
