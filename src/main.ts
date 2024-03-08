@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { GitHubOIDCStack, MyStack } from './stacks';
+import { BaseStack, GitHubOIDCStack } from './stacks';
 
 // Inherit environment variables from npm run commands (displayed in .projen/tasks.json)
 const environment = process.env.ENVIRONMENT || 'dev';
@@ -17,7 +17,7 @@ new GitHubOIDCStack(app, `GitHubSupportStack-${environment}`, {
 });
 
 // Create a new stack with your resources
-new MyStack(app, `MyStack-${environment}`, {
+new BaseStack(app, `BaseStack-${environment}`, {
   env: awsEnvironment,
   environment: environment,
 });

@@ -1,7 +1,8 @@
 import * as cdk from 'aws-cdk-lib';
 import type { Construct } from 'constructs';
+// import { NetworkConstruct } from '../constructs';
 
-export interface MyStackProps extends cdk.StackProps {
+export interface BaseStackProps extends cdk.StackProps {
   /**
    * Determine the stage to which you want to deploy the stack
    *
@@ -10,11 +11,12 @@ export interface MyStackProps extends cdk.StackProps {
   readonly environment?: string;
 }
 
-export class MyStack extends cdk.Stack {
+export class BaseStack extends cdk.Stack {
   // biome-ignore lint/complexity/noUselessConstructor: <explanation>
-  constructor(scope: Construct, id: string, props: MyStackProps) {
+  constructor(scope: Construct, id: string, props: BaseStackProps) {
     super(scope, id, props);
 
-    // define resources here...
+    // ↓↓ instantiate your constructs here ↓↓
+    // new NetworkConstruct(this, 'NetworkConstruct'); // creates a new VPC
   }
 }
