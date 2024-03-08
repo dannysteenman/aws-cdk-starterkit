@@ -10,6 +10,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'aws-cdk-starterkit',
   description: 'Create and deploy an AWS CDK app on your AWS account in less than 5 minutes using GitHub actions!',
   cdkVersion: '2.131.0', // Find the latest CDK version here: https://www.npmjs.com/package/aws-cdk-lib
+  cdkVersionPinning: true,
   defaultReleaseBranch: 'main',
   packageManager: NodePackageManager.NPM,
   minNodeVersion: '20.0.0',
