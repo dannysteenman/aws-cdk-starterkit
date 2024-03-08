@@ -1,6 +1,6 @@
 {
   "name": "aws-cdk-starterkit",
-  "description": "Create and deploy an AWS CDK app on your AWS account in less than 5 minutes!",
+  "description": "Create and deploy an AWS CDK app on your AWS account in less than 5 minutes using GitHub actions!",
   "scripts": {
     "build": "npx projen build",
     "bundle": "npx projen bundle",
@@ -9,6 +9,10 @@
     "default": "npx projen default",
     "deploy": "npx projen deploy",
     "destroy": "npx projen destroy",
+    "dev:deploy": "npx projen dev:deploy",
+    "dev:destroy": "npx projen dev:destroy",
+    "dev:diff": "npx projen dev:diff",
+    "dev:synth": "npx projen dev:synth",
     "diff": "npx projen diff",
     "eject": "npx projen eject",
     "eslint": "npx projen eslint",
@@ -19,17 +23,28 @@
     "synth": "npx projen synth",
     "synth:silent": "npx projen synth:silent",
     "test": "npx projen test",
+    "test:deploy": "npx projen test:deploy",
+    "test:destroy": "npx projen test:destroy",
+    "test:diff": "npx projen test:diff",
+    "test:synth": "npx projen test:synth",
     "test:watch": "npx projen test:watch",
     "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
     "projen": "npx projen"
+  },
+  "author": {
+    "name": "Danny Steenman",
+    "email": "danny@towardsthecloud.com",
+    "url": "https://towardsthecloud.com",
+    "organization": true
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^6",
     "@typescript-eslint/parser": "^6",
-    "aws-cdk": "^2.130.0",
+    "aws-cdk": "^2.131.0",
+    "aws-cdk-github-oidc": "^2.4.1",
     "esbuild": "^0.20.1",
     "eslint": "^8",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -42,7 +57,7 @@
     "typescript": "^5.4.2"
   },
   "dependencies": {
-    "aws-cdk-lib": "^2.130.0",
+    "aws-cdk-lib": "^2.131.0",
     "constructs": "^10.0.5"
   },
   "license": "Apache-2.0",

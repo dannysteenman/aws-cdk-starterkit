@@ -93,6 +93,62 @@
         }
       ]
     },
+    "dev:deploy": {
+      "name": "dev:deploy",
+      "description": "Deploy the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev"
+      },
+      "steps": [
+        {
+          "exec": "cdk deploy --require-approval never *Stack-dev"
+        }
+      ]
+    },
+    "dev:destroy": {
+      "name": "dev:destroy",
+      "description": "Destroy the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev"
+      },
+      "steps": [
+        {
+          "exec": "cdk destroy --force *Stack-dev"
+        }
+      ]
+    },
+    "dev:diff": {
+      "name": "dev:diff",
+      "description": "Diff the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev"
+      },
+      "steps": [
+        {
+          "exec": "cdk diff --require-approval never *Stack-dev"
+        }
+      ]
+    },
+    "dev:synth": {
+      "name": "dev:synth",
+      "description": "Synth the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev"
+      },
+      "steps": [
+        {
+          "exec": "cdk synth"
+        }
+      ]
+    },
     "diff": {
       "name": "diff",
       "description": "Diffs the currently deployed app against your code",
@@ -194,6 +250,62 @@
         }
       ]
     },
+    "test:deploy": {
+      "name": "test:deploy",
+      "description": "Deploy the stacks on the TEST account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "test"
+      },
+      "steps": [
+        {
+          "exec": "cdk deploy --require-approval never *Stack-test"
+        }
+      ]
+    },
+    "test:destroy": {
+      "name": "test:destroy",
+      "description": "Destroy the stacks on the TEST account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "test"
+      },
+      "steps": [
+        {
+          "exec": "cdk destroy --force *Stack-test"
+        }
+      ]
+    },
+    "test:diff": {
+      "name": "test:diff",
+      "description": "Diff the stacks on the TEST account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "test"
+      },
+      "steps": [
+        {
+          "exec": "cdk diff --require-approval never *Stack-test"
+        }
+      ]
+    },
+    "test:synth": {
+      "name": "test:synth",
+      "description": "Synth the stacks on the TEST account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "test"
+      },
+      "steps": [
+        {
+          "exec": "cdk synth"
+        }
+      ]
+    },
     "test:watch": {
       "name": "test:watch",
       "description": "Run jest in watch mode",
@@ -211,13 +323,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@types/jest,aws-cdk-github-oidc,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript"
         },
         {
           "exec": "npm install"
         },
         {
-          "exec": "npm update @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit projen ts-jest ts-node typescript aws-cdk-lib constructs"
+          "exec": "npm update @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-github-oidc aws-cdk esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit projen ts-jest ts-node typescript aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"
