@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
-    "@types/node": "^18",
+    "@types/node": "^20",
     "@typescript-eslint/eslint-plugin": "^6",
     "@typescript-eslint/parser": "^6",
     "aws-cdk": "^2.131.0",
@@ -59,6 +59,9 @@
     "aws-cdk-github-oidc": "^2.4.1",
     "aws-cdk-lib": "^2.131.0",
     "constructs": "^10.0.5"
+  },
+  "engines": {
+    "node": ">= 20.0.0"
   },
   "license": "Apache-2.0",
   "version": "0.0.0",
