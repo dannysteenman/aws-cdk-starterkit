@@ -1,27 +1,15 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { awscdk } from 'projen';
 
-export interface Environment {
-  [key: string]: string;
-  /**
-  * Choose the environment you want to deploy your CDK stacks to
-  *
-  * Usage example:
-    ENVIRONMENT: 'dev'
-  */
-  ENVIRONMENT: 'dev' | 'test' | 'staging' | 'production';
-}
-
-export function cdkActionTask(cdkProject: awscdk.AwsCdkTypeScriptApp, environment: Environment) {
-  const { ENVIRONMENT: stage } = environment;
+export function cdkActionTask(cdkProject: awscdk.AwsCdkTypeScriptApp, targetAccount: { [name: string]: string }) {
   const taskActions = ['synth', 'diff', 'deploy', 'destroy'];
-  const stackNamePattern = `*Stack-${stage}`;
+  const stackNamePattern = `*Stack-${targetAccount.ENVIRONMENT}`;
 
   for (const action of taskActions) {
-    const taskName = `${stage}:${action}`;
+    const taskName = `${targetAccount.ENVIRONMENT}:${action}`;
     const taskDescription = `${
       action.charAt(0).toUpperCase() + action.slice(1)
-    } the stacks on the ${stage.toUpperCase()} account`;
+    } the stacks on the ${targetAccount.ENVIRONMENT.toUpperCase()} account`;
 
     let execCommand = `cdk ${action} --require-approval never ${stackNamePattern}`;
     if (action === 'destroy') execCommand = `cdk destroy --force ${stackNamePattern}`;
@@ -29,7 +17,7 @@ export function cdkActionTask(cdkProject: awscdk.AwsCdkTypeScriptApp, environmen
 
     cdkProject.addTask(taskName, {
       description: taskDescription,
-      env: environment,
+      env: targetAccount,
       exec: execCommand,
     });
   }

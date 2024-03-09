@@ -73,20 +73,29 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   ],
 });
 
+// Define the AWS Region for the CDK app
+project.tasks.addEnvironment('CDK_DEFAULT_REGION', 'us-east-1');
+
+// Define the target AWS accounts for the different environments
+type Environment = 'dev' | 'test' | 'staging' | 'production';
+const targetAccounts: Record<Environment, string | undefined> = {
+  dev: '987654321012',
+  test: '123456789012',
+  staging: undefined,
+  production: undefined,
+};
+
 /* Add npm run commands that you can use to deploy to each environment
 The environment variables are passed to the CDK CLI to deploy to the correct account and region
 The `cdkDeploymentTask` function is defined in the `src/bin/helper.ts` file
 You can now run a command like: `npm run dev:synth` to synthesize your aws cdk dev stacks */
-cdkActionTask(project, {
-  CDK_DEFAULT_ACCOUNT: '987654321012', // Replace with your AWS account number
-  CDK_DEFAULT_REGION: 'us-east-1', // Replace with your AWS region
-  ENVIRONMENT: 'dev', // Replace with your environment
-});
-
-cdkActionTask(project, {
-  CDK_DEFAULT_ACCOUNT: '123456789012',
-  CDK_DEFAULT_REGION: 'us-east-1',
-  ENVIRONMENT: 'test',
-});
+for (const [env, account] of Object.entries(targetAccounts)) {
+  if (account) {
+    cdkActionTask(project, {
+      CDK_DEFAULT_ACCOUNT: account,
+      ENVIRONMENT: env,
+    });
+  }
+}
 
 project.synth();
