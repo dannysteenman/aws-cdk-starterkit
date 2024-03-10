@@ -1,3 +1,5 @@
+# [![AWS CDK Starterkit header](https://raw.githubusercontent.com/dannysteenman/aws-cdk-starterkit/main/icons/github-header-image.png)](https://towardsthecloud.com)
+
 # AWS CDK Starterkit
 
 > The perfect starter kit to create and deploy an AWS CDK app on your AWS account in less than 5 minutes using GitHub actions!
