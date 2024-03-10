@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { github } from 'projen';
 
-export function githubCICD(gh: github.GitHub, env: string, account: string, nodeVersion: string) {
+export function githubCICD(gh: github.GitHub, account: string, env: string, nodeVersion: string) {
   // Add a GitHub workflow for deploying the CDK stacks to the AWS accountde .
   const cdkDeploymentWorkFlow = new github.GithubWorkflow(gh, `cdk-deploy-${env}`);
   cdkDeploymentWorkFlow.on({

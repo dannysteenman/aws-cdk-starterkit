@@ -106,7 +106,7 @@ for (const [env, account] of Object.entries(targetAccounts)) {
     });
 
     // Adds GitHub action workflows for deploying the CDK stacks to the target AWS account
-    githubCICD(gh, env, account, nodeVersion);
+    githubCICD(gh, account, env, nodeVersion);
   }
 }
 
