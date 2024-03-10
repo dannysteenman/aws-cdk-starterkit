@@ -3,7 +3,6 @@
 !/.projen/tasks.json
 !/.projen/deps.json
 !/.projen/files.json
-!/.github/workflows/pull-request-lint.yml
 !/package.json
 !/LICENSE
 !/.npmignore
@@ -78,4 +77,7 @@ junit.xml
 /cdk.out/
 .cdk.staging/
 .parcel-cache/
+!/.github/workflows/pull-request-lint.yml
+!/.github/workflows/cdk-deploy-dev.yml
+!/.github/workflows/cdk-deploy-test.yml
 !/.projenrc.ts

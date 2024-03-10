@@ -1,6 +1,10 @@
-import { awscdk } from 'projen';
+import { awscdk, github } from 'projen';
 import { NodePackageManager } from 'projen/lib/javascript';
 import { cdkActionTask } from './src/bin/env-helper';
+import { githubCICD } from './src/bin/cicd-helper';
+
+// Set the minimum node version for AWS CDK and the GitHub actions workflow
+const nodeVersion = '20.0.0';
 
 const project = new awscdk.AwsCdkTypeScriptApp({
   authorName: 'Danny Steenman',
@@ -13,10 +17,13 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   cdkVersionPinning: true,
   defaultReleaseBranch: 'main',
   packageManager: NodePackageManager.NPM,
-  minNodeVersion: '20.0.0',
+  minNodeVersion: nodeVersion,
   projenrcTs: true,
   deps: ['aws-cdk-github-oidc'] /* Runtime dependencies of this module. */,
   // devDeps: []                /* Build dependencies for this module. */,
+  githubOptions: {
+    pullRequestLint: false,
+  },
   pullRequestTemplateContents: [
     '## Pull request checklist\n',
     'Please check if your PR fulfills the following requirements:\n',
@@ -89,12 +96,17 @@ const targetAccounts: Record<Environment, string | undefined> = {
 The environment variables are passed to the CDK CLI to deploy to the correct account and region
 The `cdkDeploymentTask` function is defined in the `src/bin/helper.ts` file
 You can now run a command like: `npm run dev:synth` to synthesize your aws cdk dev stacks */
+const gh = new github.GitHub(project);
 for (const [env, account] of Object.entries(targetAccounts)) {
   if (account) {
+    // Adds customized 'npm run' commands for executing cdk synth, test, deploy and diff for each environment
     cdkActionTask(project, {
       CDK_DEFAULT_ACCOUNT: account,
       ENVIRONMENT: env,
     });
+
+    // Adds GitHub action workflows for deploying the CDK stacks to the target AWS account
+    githubCICD(gh, env, account, nodeVersion);
   }
 }
 
