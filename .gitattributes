@@ -8,7 +8,8 @@
 /.github/workflows/cdk-deploy-dev.yml linguist-generated
 /.github/workflows/cdk-deploy-test.yml linguist-generated
 /.github/workflows/pull-request-lint.yml linguist-generated
-/.github/workflows/upgrade.yml linguist-generated
+/.github/workflows/release.yml linguist-generated
+/.github/workflows/upgrade-main.yml linguist-generated
 /.gitignore linguist-generated
 /.mergify.yml linguist-generated
 /.npmignore linguist-generated

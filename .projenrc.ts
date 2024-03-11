@@ -1,7 +1,7 @@
 import { awscdk, github } from 'projen';
 import { NodePackageManager } from 'projen/lib/javascript';
-import { cdkActionTask } from './src/bin/env-helper';
 import { githubCICD } from './src/bin/cicd-helper';
+import { cdkActionTask } from './src/bin/env-helper';
 
 // Set the minimum node version for AWS CDK and the GitHub actions workflow
 const nodeVersion = '20.0.0';
@@ -19,6 +19,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   packageManager: NodePackageManager.NPM,
   minNodeVersion: nodeVersion,
   projenrcTs: true,
+  release: true,
   deps: ['aws-cdk-github-oidc'] /* Runtime dependencies of this module. */,
   // devDeps: []                /* Build dependencies for this module. */,
   githubOptions: {

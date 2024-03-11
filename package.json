@@ -3,6 +3,7 @@
   "description": "Create and deploy an AWS CDK app on your AWS account in less than 5 minutes using GitHub actions!",
   "scripts": {
     "build": "npx projen build",
+    "bump": "npx projen bump",
     "bundle": "npx projen bundle",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
@@ -20,6 +21,7 @@
     "post-compile": "npx projen post-compile",
     "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
+    "release": "npx projen release",
     "synth": "npx projen synth",
     "synth:silent": "npx projen synth:silent",
     "test": "npx projen test",
@@ -28,6 +30,7 @@
     "test:diff": "npx projen test:diff",
     "test:synth": "npx projen test:synth",
     "test:watch": "npx projen test:watch",
+    "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
     "projen": "npx projen"
@@ -51,6 +54,7 @@
     "jest": "^29.7.0",
     "jest-junit": "^15",
     "projen": "^0.80.9",
+    "standard-version": "^9",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
