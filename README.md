@@ -148,7 +148,7 @@ Here is a brief explanation of what each section does:
 >
 > Towards the Cloud is a one-person agency with over 9 years of extensive hands-on experience in architecting and building highly scalable distributed systems on AWS Cloud using Infrastructure as Code for startups and enterprises.
 >
-> *Accelerate your development velocity by leveraging our specialized skills in building robust Cloud infrastructures.*
+> *Maximize your development speed by harnessing our expertise in crafting high-performance Cloud infrastructures.*
 >
 > #### Why Choose Towards the Cloud?
 >
