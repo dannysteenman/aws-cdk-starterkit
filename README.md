@@ -142,7 +142,7 @@ Here is a brief explanation of what each section does:
 > ✅ **Empowering Your Team**: We equip your team for success, turning your infrastructure into a winning advantage.<br/>
 >
 > <a href="https://towardsthecloud.com/contact"><img alt="Request Quote" src="https://img.shields.io/badge/request%20quote-success.svg?style=for-the-badge"/></a>
-> <details><summary>📚 <strong>Discover More About Us</strong></summary>
+> <details><summary>📚 <strong>Discover more about us</strong></summary>
 >
 > <br/>
 >
