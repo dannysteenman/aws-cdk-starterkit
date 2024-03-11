@@ -10,7 +10,7 @@
 
 ## Intro
 
-Welcome to the starting line of your next AWS CDK project. This repository is crafted to supercharge your project's setup with AWS CDK TypeScript, [projen](https://github.com/projen/projen), and GitHub actions, ensuring a smooth and efficient deployment to your AWS account.
+Welcome to the starting line of your next AWS CDK project. This repository is crafted to supercharge your project's setup with AWS CDK TypeScript, projen, and GitHub actions, ensuring a smooth and efficient deployment to your AWS account.
 
 > [!TIP]
 > [Need help with your AWS CDK project? Hire us!](#need-help-with-your-aws-cdk-project-hire-us)
@@ -131,7 +131,7 @@ Here is a brief explanation of what each section does:
 ## Need help with your AWS CDK project? Hire us!
 
 > [!TIP]
-> #### Elevate Your Cloud Infrastructure with Expert AWS CDK Solutions
+> #### Elevate your Cloud Infrastructure with our Expert AWS CDK Solutions
 
 >
 > In today’s dynamic cloud landscape, transcending from mere operational functionality to achieving peak operational excellence is pivotal and largely dependent on the robustness, scalability, and efficiency of your cloud infrastructure.<br/><br/>
@@ -142,7 +142,7 @@ Here is a brief explanation of what each section does:
 > ✅ **Empowering Your Team**: We equip your team for success, turning your infrastructure into a winning advantage.<br/>
 >
 > <a href="https://towardsthecloud.com/contact"><img alt="Request Quote" src="https://img.shields.io/badge/request%20quote-success.svg?style=for-the-badge"/></a>
-> <details><summary>📚 <strong>Learn more about us</strong></summary>
+> <details><summary>📚 <strong>Discover More About Us</strong></summary>
 >
 > <br/>
 >
@@ -156,7 +156,7 @@ Here is a brief explanation of what each section does:
 > - **Tailored Solutions**: Your business is unique, and so are your cloud needs. We provide personalized consultations and solutions tailored to perfectly align with your project requirements and business goals.
 > - **Cost-Effective and Efficient**: Benefit from our streamlined processes and deep AWS knowledge to optimize costs without compromising on performance or security.
 > - **One-on-One Attention**: As a one-person agency, Towards the Cloud guarantees you receive dedicated support and expertise directly from an AWS Cloud Engineer. This ensures high-quality deliverables and swift decision-making.<br/>
-> - **Continuous integration and Deployment**: Empower your team to manage infrastructure changes confidently and efficiently through Pull Requests, leveraging the full power of GitHub Actions.
+> - **Seamless CI/CD**: Empower your team to manage infrastructure changes confidently and efficiently through Pull Requests, leveraging the full power of GitHub Actions.
 >
 > <a href="https://towardsthecloud.com/contact"><img alt="Request Quote" src="https://img.shields.io/badge/request%20quote-success.svg?style=for-the-badge"/></a>
 > </details>
