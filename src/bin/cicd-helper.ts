@@ -30,7 +30,7 @@ export function githubCICD(gh: github.GitHub, account: string, env: string, node
           uses: 'actions/setup-node@v4',
           with: {
             'node-version': `>=${nodeVersion}`,
-            cache: 'npm',
+            'cache': 'npm',
           },
         },
         {
