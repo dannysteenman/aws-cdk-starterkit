@@ -22,7 +22,7 @@ export function githubCICD(gh: github.GitHub, account: string, env: string, node
       },
       steps: [
         {
-          name: 'Checkout repo',
+          name: 'Checkout repository',
           uses: 'actions/checkout@v4',
         },
         {
@@ -43,15 +43,15 @@ export function githubCICD(gh: github.GitHub, account: string, env: string, node
         },
         {
           name: 'Install dependencies',
-          uses: 'npm ci',
+          run: 'npm ci',
         },
         {
           name: `Run CDK synth for the ${env.toUpperCase()} environment`,
-          uses: `npm run ${env}:synth`,
+          run: `npm run ${env}:synth`,
         },
         {
           name: `Deploy CDK to the ${env.toUpperCase()} environment on AWS account ${account}`,
-          uses: `npm run ${env}:deploy`,
+          run: `npm run ${env}:deploy`,
         },
       ],
     },

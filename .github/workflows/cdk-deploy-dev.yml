@@ -15,7 +15,7 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup nodejs environment
         uses: actions/setup-node@v4
@@ -28,8 +28,8 @@ jobs:
           role-to-assume: arn:aws:iam::987654321012:role/GitHubDeployRole
           aws-region: us-east-1
       - name: Install dependencies
-        uses: npm ci
+        run: npm ci
       - name: Run CDK synth for the DEV environment
-        uses: npm run dev:synth
+        run: npm run dev:synth
       - name: Deploy CDK to the DEV environment on AWS account 987654321012
-        uses: npm run dev:deploy
+        run: npm run dev:deploy
