@@ -53,11 +53,11 @@
     "eslint-plugin-import": "^2.29.1",
     "jest": "^29.7.0",
     "jest-junit": "^15",
-    "projen": "^0.80.10",
+    "projen": "^0.80.11",
     "standard-version": "^9",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.3"
   },
   "dependencies": {
     "aws-cdk-github-oidc": "^2.4.1",
