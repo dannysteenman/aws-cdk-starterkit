@@ -2,7 +2,7 @@
 
 # AWS CDK Starterkit
 
-> The perfect starter kit to create and deploy an AWS CDK app on your AWS account in less than 5 minutes using GitHub actions!
+> The perfect starter kit to create and deploy an AWS CDK App using TypeScript on your AWS account in less than 5 minutes using GitHub actions!
 
 [![Build Status](https://github.com/dannysteenman/aws-cdk-starterkit/actions/workflows/build.yml/badge.svg)](https://github.com/dannysteenman/aws-cdk-starterkit/actions/workflows/build.yml)
 [![ESLint Code Formatting](https://img.shields.io/badge/code_style-eslint-brightgreen.svg)](https://eslint.org)
@@ -160,6 +160,10 @@ Here is a brief explanation of what each section does:
 >
 > <a href="https://towardsthecloud.com/contact"><img alt="Request Quote" src="https://img.shields.io/badge/request%20quote-success.svg?style=for-the-badge"/></a>
 > </details>
+
+## AWS CDK Starterkit for Python Users
+
+> **Looking for the Python version of this AWS CDK starter kit?** Check out the [AWS CDK Python Starterkit](https://github.com/dannysteenman/aws-cdk-python-starterkit) for a tailored experience that leverages the full power of AWS CDK with Python.
 
 ## Acknowledgements
 
