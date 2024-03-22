@@ -48,7 +48,25 @@ The NetworkConstruct extends BaseConstruct and showcases how to leverage inherit
 Example to enable this construct in your stack:
 
 ```typescript
-import { NetworkConstruct } from './network-construct';
+import * as cdk from 'aws-cdk-lib';
+import type { Construct } from 'constructs';
+import { NetworkConstruct } from '../constructs';
 
-const network = new NetworkConstruct(this, 'NetworkConstruct');
+export interface BaseStackProps extends cdk.StackProps {
+  /**
+   * Determine the stage to which you want to deploy the stack
+   *
+   * @default - If not given, it will throw out an error
+   */
+  readonly environment?: string;
+}
+
+export class BaseStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props: BaseStackProps) {
+    super(scope, id, props);
+
+    // ↓↓ instantiate your constructs here ↓↓
+    new NetworkConstruct(this, 'NetworkConstruct'); // sample construct that creates a VPC
+  }
+}
 ```

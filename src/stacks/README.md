@@ -13,14 +13,21 @@ The `BaseStack` serves as a foundational stack that you can use to start instant
 ### Example Usage
 
 ```typescript
-import { BaseStack, BaseStackProps } from './base-stack';
+import * as cdk from 'aws-cdk-lib';
+import { BaseStack } from './stacks';
 
-const baseStackProps: BaseStackProps = {
-  environment: 'dev',
-  /* other AWS CDK StackProps */
+// Inherit environment variables from npm run commands (displayed in .projen/tasks.json)
+const environment = process.env.ENVIRONMENT || 'dev';
+const awsEnvironment = {
+  account: process.env.CDK_DEFAULT_ACCOUNT,
+  region: process.env.CDK_DEFAULT_REGION,
 };
 
-const myStack = new BaseStack(app, `BaseStack-${environment}`, {
+// Instantiate the CDK app
+const app = new cdk.App();
+
+// Create a new stack with your resources
+new BaseStack(app, `BaseStack-${environment}`, {
   env: awsEnvironment,
   environment: environment,
 });
@@ -42,9 +49,21 @@ The stack automatically retrieves GitHub repository details (owner and repositor
 ### Example Usage
 
 ```typescript
-import { GitHubOIDCStack } from './github-oidc-stack';
+import * as cdk from 'aws-cdk-lib';
+import { GitHubOIDCStack } from './stacks';
 
-const gitHubOIDCStack = new GitHubOIDCStack(app, `GitHubOIDCStack-${environment}`, {
+// Inherit environment variables from npm run commands (displayed in .projen/tasks.json)
+const environment = process.env.ENVIRONMENT || 'dev';
+const awsEnvironment = {
+  account: process.env.CDK_DEFAULT_ACCOUNT,
+  region: process.env.CDK_DEFAULT_REGION,
+};
+
+// Instantiate the CDK app
+const app = new cdk.App();
+
+// Add GitHub OpenID Connect support and create an IAM role for GitHub
+new GitHubOIDCStack(app, `GitHubOIDCStack-${environment}`, {
   env: awsEnvironment,
 });
 ```
