@@ -6,6 +6,10 @@ import { cdkActionTask } from './src/bin/env-helper';
 // Set the minimum node version for AWS CDK and the GitHub actions workflow
 const nodeVersion = '20.0.0';
 
+/* Define the AWS region for the CDK app and github workflows
+Default to us-east-1 if AWS_REGION is not set in your environment variables */
+const awsRegion = process.env.AWS_REGION || 'us-east-1';
+
 const project = new awscdk.AwsCdkTypeScriptApp({
   authorName: 'Danny Steenman',
   authorUrl: 'https://towardsthecloud.com',
@@ -81,8 +85,9 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   ],
 });
 
-// Define the AWS Region for the CDK app
-project.tasks.addEnvironment('CDK_DEFAULT_REGION', 'us-east-1');
+/* Set the CDK_DEFAULT_REGION environment variable for the projen tasks,
+so the CDK CLI knows which region to use */
+project.tasks.addEnvironment('CDK_DEFAULT_REGION', awsRegion);
 
 // Define the target AWS accounts for the different environments
 type Environment = 'dev' | 'test' | 'staging' | 'production';

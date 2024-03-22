@@ -17,6 +17,6 @@ export class BaseStack extends cdk.Stack {
     super(scope, id, props);
 
     // ↓↓ instantiate your constructs here ↓↓
-    // new NetworkConstruct(this, 'NetworkConstruct'); // creates a new VPC
+    // new NetworkConstruct(this, 'NetworkConstruct'); // sample construct that creates a VPC
   }
 }
