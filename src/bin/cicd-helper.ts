@@ -5,9 +5,7 @@ export function githubCICD(gh: github.GitHub, account: string, env: string, node
   // Add a GitHub workflow for deploying the CDK stacks to the AWS accountde .
   const cdkDeploymentWorkFlow = new github.GithubWorkflow(gh, `cdk-deploy-${env}`);
   cdkDeploymentWorkFlow.on({
-    push: {
-      branches: ['main'],
-    },
+    push: env !== 'production' ? { branches: ['main'] } : undefined,
     workflowDispatch: {},
   });
 
