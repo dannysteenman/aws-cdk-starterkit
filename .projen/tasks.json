@@ -1,5 +1,61 @@
 {
   "tasks": {
+    "branch:dev:deploy": {
+      "name": "branch:dev:deploy",
+      "description": "Deploy the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "ENVIRONMENT": "dev",
+        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
+      },
+      "steps": [
+        {
+          "exec": "cdk deploy --require-approval never *Stack*"
+        }
+      ]
+    },
+    "branch:dev:destroy": {
+      "name": "branch:dev:destroy",
+      "description": "Destroy the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "ENVIRONMENT": "dev",
+        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
+      },
+      "steps": [
+        {
+          "exec": "cdk destroy --force *Stack*"
+        }
+      ]
+    },
+    "branch:dev:diff": {
+      "name": "branch:dev:diff",
+      "description": "Diff the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "ENVIRONMENT": "dev",
+        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
+      },
+      "steps": [
+        {
+          "exec": "cdk diff --require-approval never *Stack*"
+        }
+      ]
+    },
+    "branch:dev:synth": {
+      "name": "branch:dev:synth",
+      "description": "Synth the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "ENVIRONMENT": "dev",
+        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
+      },
+      "steps": [
+        {
+          "exec": "cdk synth"
+        }
+      ]
+    },
     "build": {
       "name": "build",
       "description": "Full release build",
@@ -119,7 +175,7 @@
       },
       "steps": [
         {
-          "exec": "cdk deploy --require-approval never *Stack-dev"
+          "exec": "cdk deploy --require-approval never *Stack*"
         }
       ]
     },
@@ -132,7 +188,7 @@
       },
       "steps": [
         {
-          "exec": "cdk destroy --force *Stack-dev"
+          "exec": "cdk destroy --force *Stack*"
         }
       ]
     },
@@ -145,7 +201,7 @@
       },
       "steps": [
         {
-          "exec": "cdk diff --require-approval never *Stack-dev"
+          "exec": "cdk diff --require-approval never *Stack*"
         }
       ]
     },
@@ -296,7 +352,7 @@
       },
       "steps": [
         {
-          "exec": "cdk deploy --require-approval never *Stack-test"
+          "exec": "cdk deploy --require-approval never *Stack*"
         }
       ]
     },
@@ -309,7 +365,7 @@
       },
       "steps": [
         {
-          "exec": "cdk destroy --force *Stack-test"
+          "exec": "cdk destroy --force *Stack*"
         }
       ]
     },
@@ -322,7 +378,7 @@
       },
       "steps": [
         {
-          "exec": "cdk diff --require-approval never *Stack-test"
+          "exec": "cdk diff --require-approval never *Stack*"
         }
       ]
     },

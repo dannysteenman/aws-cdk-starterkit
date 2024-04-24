@@ -2,6 +2,10 @@
   "name": "aws-cdk-starterkit",
   "description": "Create and deploy an AWS CDK app on your AWS account in less than 5 minutes using GitHub actions!",
   "scripts": {
+    "branch:dev:deploy": "npx projen branch:dev:deploy",
+    "branch:dev:destroy": "npx projen branch:dev:destroy",
+    "branch:dev:diff": "npx projen branch:dev:diff",
+    "branch:dev:synth": "npx projen branch:dev:synth",
     "build": "npx projen build",
     "bump": "npx projen bump",
     "bundle": "npx projen bundle",
