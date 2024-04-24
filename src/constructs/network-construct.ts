@@ -19,9 +19,9 @@ export class NetworkConstruct extends BaseConstruct {
       this.environment === 'production'
         ? {}
         : {
-          autoDeleteObjects: true,
-          removalPolicy: RemovalPolicy.DESTROY,
-        };
+            autoDeleteObjects: true,
+            removalPolicy: RemovalPolicy.DESTROY,
+          };
 
     // Create a VPC with 9 subnets divided over 3 AZ's (3 public, 3 private, 3 isolated)
     this.vpc = new ec2.Vpc(this, 'Vpc', {
@@ -35,6 +35,8 @@ export class NetworkConstruct extends BaseConstruct {
         s3: {
           destination: ec2.FlowLogDestination.toS3(
             new s3.Bucket(this, 'VpcFlowLogBucket', {
+              // Create a unique bucket name for the VPC flow logs (works for branch based deploys)
+              bucketName: this.unique(`vpc-flow-logs-${this.account}`),
               encryption: s3.BucketEncryption.S3_MANAGED,
               blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
               ...bucketProps,

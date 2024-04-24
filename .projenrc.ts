@@ -1,7 +1,7 @@
 import { awscdk, github } from 'projen';
 import { NodePackageManager } from 'projen/lib/javascript';
-import { githubCICD } from './src/bin/cicd-helper';
-import { cdkActionTask } from './src/bin/env-helper';
+import { createCdkDeploymentWorkflows } from './src/bin/cicd-helper';
+import { addCdkActionTask } from './src/bin/env-helper';
 
 // Set the minimum node version for AWS CDK and the GitHub actions workflow
 const nodeVersion = '20.0.0';
@@ -106,13 +106,24 @@ const gh = new github.GitHub(project);
 for (const [env, account] of Object.entries(targetAccounts)) {
   if (account) {
     // Adds customized 'npm run' commands for executing cdk synth, test, deploy and diff for each environment
-    cdkActionTask(project, {
+    addCdkActionTask(project, {
       CDK_DEFAULT_ACCOUNT: account,
       ENVIRONMENT: env,
     });
 
     // Adds GitHub action workflows for deploying the CDK stacks to the target AWS account
-    githubCICD(gh, account, env, nodeVersion);
+    createCdkDeploymentWorkflows(gh, account, env, nodeVersion);
+
+    // Adds a separate task with the GIT_BRANCH_REF env variable for the dev environment
+    if (env === 'dev') {
+      addCdkActionTask(project, {
+        CDK_DEFAULT_ACCOUNT: account,
+        ENVIRONMENT: env,
+        GIT_BRANCH_REF: '$(git rev-parse --abbrev-ref HEAD)',
+      });
+      const isBranchDeployment = true;
+      createCdkDeploymentWorkflows(gh, account, env, nodeVersion, isBranchDeployment);
+    }
   }
 }
 
