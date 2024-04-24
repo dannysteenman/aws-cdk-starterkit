@@ -19,7 +19,7 @@ export function createCdkDeploymentWorkflows(
   createCdkDeploymentWorkflow(gh, account, env, nodeVersion, deployForBranch);
 
   if (deployForBranch) {
-    createCdkDestroyWorkflow(gh, env);
+    createCdkDestroyWorkflow(gh, account, env, nodeVersion);
   }
 }
 
@@ -82,14 +82,19 @@ function createCdkDeploymentWorkflow(
  * @param env - The environment (e.g., "test", "staging", "production") for which the CDK stacks were deployed.
  * @returns The created `github.GithubWorkflow` instance.
  */
-function createCdkDestroyWorkflow(gh: github.GitHub, env: string): github.GithubWorkflow {
+function createCdkDestroyWorkflow(
+  gh: github.GitHub,
+  account: string,
+  env: string,
+  nodeVersion: string,
+): github.GithubWorkflow {
   const cdkDestroyWorkflow = new github.GithubWorkflow(gh, `cdk-destroy-${env}-branch`);
   cdkDestroyWorkflow.on({
     workflowDispatch: {},
     delete: {},
   });
 
-  const commonWorkflowSteps = getCommonWorkflowSteps(undefined, undefined);
+  const commonWorkflowSteps = getCommonWorkflowSteps(account, nodeVersion);
 
   cdkDestroyWorkflow.addJobs({
     destroy: {
@@ -103,13 +108,13 @@ function createCdkDestroyWorkflow(gh: github.GitHub, env: string): github.Github
       },
       steps: commonWorkflowSteps.concat([
         {
-          name: 'Set destroyed branch name',
+          name: 'Fetch Deleted Branch Name',
           id: 'destroy-branch',
           if: "github.event.ref_type == 'branch' && github.event_name == 'delete'",
           run: 'BRANCH=$(cat ${{ github.event_path }} | jq --raw-output \'.ref\'); echo "${{ github.repository }} has ${BRANCH} branch"; echo "DESTROY_BRANCH_NAME=$BRANCH" >> $GITHUB_OUTPUT',
         },
         {
-          name: 'CDK destroy manually, current branch',
+          name: 'Destroy Branch Stack (Workflow Dispatch)',
           if: "github.event_name == 'workflow_dispatch'",
           run: 'npm run branch:test:destroy',
           env: {
@@ -117,7 +122,7 @@ function createCdkDestroyWorkflow(gh: github.GitHub, env: string): github.Github
           },
         },
         {
-          name: 'CDK destroy after deleting feature branch',
+          name: 'Destroy Branch Stack (Branch Deletion)',
           if: "github.event.ref_type == 'branch' && github.event_name == 'delete'",
           run: 'npm run branch:test:destroy',
           env: {
@@ -125,7 +130,7 @@ function createCdkDestroyWorkflow(gh: github.GitHub, env: string): github.Github
           },
         },
         {
-          name: 'CDK destroy after closing PR',
+          name: 'Destroy Branch Stack (Pull Request Closure)',
           if: "github.event_name == 'pull_request'",
           run: 'npm run branch:test:destroy',
           env: {
@@ -156,7 +161,7 @@ function getCommonWorkflowSteps(account: string | undefined, nodeVersion: string
       uses: 'actions/setup-node@v4',
       with: {
         'node-version': nodeVersion ? `>=${nodeVersion}` : undefined,
-        cache: 'npm',
+        'cache': 'npm',
       },
     },
     {

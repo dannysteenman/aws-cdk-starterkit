@@ -19,28 +19,30 @@ jobs:
       - name: Setup nodejs environment
         uses: actions/setup-node@v4
         with:
+          node-version: ">=20.0.0"
           cache: npm
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
+          role-to-assume: arn:aws:iam::987654321012:role/GitHubDeployRole
           aws-region: us-east-1
       - name: Install dependencies
         run: npm ci
-      - name: Set destroyed branch name
+      - name: Fetch Deleted Branch Name
         id: destroy-branch
         if: github.event.ref_type == 'branch' && github.event_name == 'delete'
         run: BRANCH=$(cat ${{ github.event_path }} | jq --raw-output '.ref'); echo "${{ github.repository }} has ${BRANCH} branch"; echo "DESTROY_BRANCH_NAME=$BRANCH" >> $GITHUB_OUTPUT
-      - name: CDK destroy manually, current branch
+      - name: Destroy Branch Stack (Workflow Dispatch)
         if: github.event_name == 'workflow_dispatch'
         env:
           GIT_BRANCH_REF: ${{ github.ref_name }}
         run: npm run branch:test:destroy
-      - name: CDK destroy after deleting feature branch
+      - name: Destroy Branch Stack (Branch Deletion)
         if: github.event.ref_type == 'branch' && github.event_name == 'delete'
         env:
           GIT_BRANCH_REF: ${{ steps.destroy-branch.outputs.DESTROY_BRANCH_NAME }}
         run: npm run branch:test:destroy
-      - name: CDK destroy after closing PR
+      - name: Destroy Branch Stack (Pull Request Closure)
         if: github.event_name == 'pull_request'
         env:
           GIT_BRANCH_REF: ${{ github.head_ref }}
