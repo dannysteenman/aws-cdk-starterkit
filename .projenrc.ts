@@ -89,6 +89,14 @@ const project = new awscdk.AwsCdkTypeScriptApp({
 so the CDK CLI knows which region to use */
 project.tasks.addEnvironment('CDK_DEFAULT_REGION', awsRegion);
 
+/**
+ * Define the name of the GitHub deploy role that will be created by the GitHubOIDCStack.
+ * Set this as an environment variable for the projen tasks, so other parts of the project
+ * can reference the role name.
+ * The default role name is 'GitHubDeployRole'.
+ */
+project.tasks.addEnvironment('GITHUB_DEPLOY_ROLE', 'GitHubDeployRole');
+
 // Define the target AWS accounts for the different environments
 type Environment = 'dev' | 'test' | 'staging' | 'production';
 const targetAccounts: Record<Environment, string | undefined> = {

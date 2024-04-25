@@ -168,7 +168,7 @@ function getCommonWorkflowSteps(account: string | undefined, nodeVersion: string
       name: 'Configure AWS credentials',
       uses: 'aws-actions/configure-aws-credentials@v4',
       with: {
-        'role-to-assume': account ? `arn:aws:iam::${account}:role/GitHubDeployRole` : undefined,
+        'role-to-assume': account ? `arn:aws:iam::${account}:role/${process.env.GITHUB_DEPLOY_ROLE}` : undefined,
         'aws-region': process.env.CDK_DEFAULT_REGION,
       },
     },

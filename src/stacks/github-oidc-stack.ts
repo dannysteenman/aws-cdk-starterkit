@@ -25,7 +25,7 @@ export class GitHubOIDCStack extends Stack {
       provider: provider,
       owner: gitOwner,
       repo: gitRepoName,
-      roleName: 'GitHubDeployRole',
+      roleName: `${process.env.GITHUB_DEPLOY_ROLE}`,
       managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess')],
     });
 
