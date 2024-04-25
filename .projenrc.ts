@@ -18,6 +18,9 @@ const awsRegion = process.env.AWS_REGION || 'us-east-1';
  */
 const githubRole = 'GitHubDeployRole';
 
+/**
+ * Creates a new AWS CDK TypeScript application project.
+ */
 const project = new awscdk.AwsCdkTypeScriptApp({
   authorName: 'Danny Steenman',
   authorUrl: 'https://towardsthecloud.com',
