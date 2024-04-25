@@ -14,7 +14,7 @@ export function addCdkActionTask(cdkProject: awscdk.AwsCdkTypeScriptApp, targetA
 
   for (const action of taskActions) {
     const taskName = targetAccount.GIT_BRANCH_REF
-      ? `localbranch:${targetAccount.ENVIRONMENT}:${action}`
+      ? `branch:${targetAccount.ENVIRONMENT}:${action}`
       : `${targetAccount.ENVIRONMENT}:${action}`;
 
     const taskDescription = `${
@@ -31,12 +31,12 @@ export function addCdkActionTask(cdkProject: awscdk.AwsCdkTypeScriptApp, targetA
       exec: execCommand,
     });
 
-    if (targetAccount.GIT_BRANCH_REF) {
-      const { GIT_BRANCH_REF, ...localBranchTargetAccount } = targetAccount;
+    if (targetAccount.GIT_BRANCH_REF && action === 'destroy') {
+      const { GIT_BRANCH_REF, ...ghBranchTargetAccount } = targetAccount;
       const githubBranchTaskName = `githubbranch:${targetAccount.ENVIRONMENT}:${action}`;
       cdkProject.addTask(githubBranchTaskName, {
         description: taskDescription,
-        env: localBranchTargetAccount,
+        env: ghBranchTargetAccount,
         exec: execCommand,
       });
     }
