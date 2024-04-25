@@ -5,21 +5,25 @@ import { github } from 'projen';
  * Creates GitHub workflows for deploying and destroying AWS CDK stacks.
  * @param gh - An instance of the `github.GitHub` class, used to create the GitHub workflows.
  * @param account - The AWS account ID to which the CDK stacks will be deployed.
+ * @param region - The AWS region to which the CDK stacks will be deployed.
  * @param env - The environment (e.g., "test", "staging", "production") for which the CDK stacks will be deployed.
+ * @param githubDeployRole - The name of the GitHub deploy role.
  * @param nodeVersion - The version of Node.js to be used for the deployment.
  * @param deployForBranch - A boolean flag that determines whether the deployment should be done for a feature branch or the main branch.
  */
 export function createCdkDeploymentWorkflows(
   gh: github.GitHub,
   account: string,
+  region: string,
   env: string,
+  githubDeployRole: string,
   nodeVersion: string,
   deployForBranch = false,
 ) {
-  createCdkDeploymentWorkflow(gh, account, env, nodeVersion, deployForBranch);
+  createCdkDeploymentWorkflow(gh, account, region, env, githubDeployRole, nodeVersion, deployForBranch);
 
   if (deployForBranch) {
-    createCdkDestroyWorkflow(gh, account, env, nodeVersion);
+    createCdkDestroyWorkflow(gh, account, region, env, githubDeployRole, nodeVersion);
   }
 }
 
@@ -27,7 +31,9 @@ export function createCdkDeploymentWorkflows(
  * Creates a GitHub workflow for deploying the CDK stacks to the AWS account.
  * @param gh - An instance of the `github.GitHub` class, used to create the GitHub workflow.
  * @param account - The AWS account ID to which the CDK stacks will be deployed.
+ * @param region - The AWS region to which the CDK stacks will be deployed.
  * @param env - The environment (e.g., "test", "staging", "production") for which the CDK stacks will be deployed.
+ * @param githubDeployRole - The name of the GitHub deploy role.
  * @param nodeVersion - The version of Node.js to be used for the deployment.
  * @param deployForBranch - A boolean flag that determines whether the deployment should be done for a feature branch or the main branch.
  * @returns The created `github.GithubWorkflow` instance.
@@ -35,7 +41,9 @@ export function createCdkDeploymentWorkflows(
 function createCdkDeploymentWorkflow(
   gh: github.GitHub,
   account: string,
+  region: string,
   env: string,
+  githubDeployRole: string,
   nodeVersion: string,
   deployForBranch: boolean,
 ): github.GithubWorkflow {
@@ -49,7 +57,7 @@ function createCdkDeploymentWorkflow(
     workflowDispatch: {},
   });
 
-  const commonWorkflowSteps = getCommonWorkflowSteps(account, nodeVersion);
+  const commonWorkflowSteps = getCommonWorkflowSteps(account, region, githubDeployRole, nodeVersion);
 
   cdkDeploymentWorkflow.addJobs({
     deploy: {
@@ -79,13 +87,19 @@ function createCdkDeploymentWorkflow(
 /**
  * Creates a GitHub workflow for destroying the CDK stacks deployed for feature branches.
  * @param gh - An instance of the `github.GitHub` class, used to create the GitHub workflow.
+ * @param account - The AWS account ID from which the CDK stacks will be destroyed.
+ * @param region - The AWS region from which the CDK stacks will be destroyed.
  * @param env - The environment (e.g., "test", "staging", "production") for which the CDK stacks were deployed.
+ * @param githubDeployRole - The name of the GitHub deploy role.
+ * @param nodeVersion - The version of Node.js to be used for the destruction.
  * @returns The created `github.GithubWorkflow` instance.
  */
 function createCdkDestroyWorkflow(
   gh: github.GitHub,
   account: string,
+  region: string,
   env: string,
+  githubDeployRole: string,
   nodeVersion: string,
 ): github.GithubWorkflow {
   const cdkDestroyWorkflow = new github.GithubWorkflow(gh, `cdk-destroy-${env}-branch`);
@@ -94,7 +108,7 @@ function createCdkDestroyWorkflow(
     delete: {},
   });
 
-  const commonWorkflowSteps = getCommonWorkflowSteps(account, nodeVersion);
+  const commonWorkflowSteps = getCommonWorkflowSteps(account, region, githubDeployRole, nodeVersion);
 
   cdkDestroyWorkflow.addJobs({
     destroy: {
@@ -146,11 +160,18 @@ function createCdkDestroyWorkflow(
 
 /**
  * Retrieves the common workflow steps for both the deployment and destruction workflows.
- * @param account - The AWS account ID to which the CDK stacks will be deployed.
- * @param nodeVersion - The version of Node.js to be used for the deployment.
+ * @param account - The AWS account ID to which the CDK stacks will be deployed/destroyed.
+ * @param region - The AWS region to which the CDK stacks will be deployed/destroyed.
+ * @param githubDeployRole - The name of the GitHub deploy role.
+ * @param nodeVersion - The version of Node.js to be used for the deployment/destruction.
  * @returns An array of common workflow steps.
  */
-function getCommonWorkflowSteps(account: string | undefined, nodeVersion: string | undefined): github.workflows.Step[] {
+function getCommonWorkflowSteps(
+  account: string | undefined,
+  region: string,
+  githubDeployRole: string,
+  nodeVersion: string | undefined,
+): github.workflows.Step[] {
   return [
     {
       name: 'Checkout repository',
@@ -168,8 +189,8 @@ function getCommonWorkflowSteps(account: string | undefined, nodeVersion: string
       name: 'Configure AWS credentials',
       uses: 'aws-actions/configure-aws-credentials@v4',
       with: {
-        'role-to-assume': account ? `arn:aws:iam::${account}:role/${process.env.GITHUB_DEPLOY_ROLE}` : undefined,
-        'aws-region': process.env.CDK_DEFAULT_REGION,
+        'role-to-assume': account ? `arn:aws:iam::${account}:role/${githubDeployRole}` : undefined,
+        'aws-region': region,
       },
     },
     {
