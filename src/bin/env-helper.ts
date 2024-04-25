@@ -14,7 +14,7 @@ export function addCdkActionTask(cdkProject: awscdk.AwsCdkTypeScriptApp, targetA
 
   for (const action of taskActions) {
     const taskName = targetAccount.GIT_BRANCH_REF
-      ? `branch:${targetAccount.ENVIRONMENT}:${action}`
+      ? `localbranch:${targetAccount.ENVIRONMENT}:${action}`
       : `${targetAccount.ENVIRONMENT}:${action}`;
 
     const taskDescription = `${
@@ -30,6 +30,16 @@ export function addCdkActionTask(cdkProject: awscdk.AwsCdkTypeScriptApp, targetA
       env: targetAccount,
       exec: execCommand,
     });
+
+    if (targetAccount.GIT_BRANCH_REF) {
+      const { GIT_BRANCH_REF, ...localBranchTargetAccount } = targetAccount;
+      const githubBranchTaskName = `githubbranch:${targetAccount.ENVIRONMENT}:${action}`;
+      cdkProject.addTask(githubBranchTaskName, {
+        description: taskDescription,
+        env: localBranchTargetAccount,
+        exec: execCommand,
+      });
+    }
   }
 }
 

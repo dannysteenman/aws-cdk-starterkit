@@ -1,69 +1,5 @@
 {
   "tasks": {
-    "branch:dev:deploy": {
-      "name": "branch:dev:deploy",
-      "description": "Deploy the stacks on the DEV account",
-      "env": {
-        "CDK_DEFAULT_ACCOUNT": "987654321012",
-        "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
-        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
-      },
-      "steps": [
-        {
-          "exec": "cdk deploy --require-approval never *Stack*"
-        }
-      ]
-    },
-    "branch:dev:destroy": {
-      "name": "branch:dev:destroy",
-      "description": "Destroy the stacks on the DEV account",
-      "env": {
-        "CDK_DEFAULT_ACCOUNT": "987654321012",
-        "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
-        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
-      },
-      "steps": [
-        {
-          "exec": "cdk destroy --force *Stack*"
-        }
-      ]
-    },
-    "branch:dev:diff": {
-      "name": "branch:dev:diff",
-      "description": "Diff the stacks on the DEV account",
-      "env": {
-        "CDK_DEFAULT_ACCOUNT": "987654321012",
-        "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
-        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
-      },
-      "steps": [
-        {
-          "exec": "cdk diff --require-approval never *Stack*"
-        }
-      ]
-    },
-    "branch:dev:synth": {
-      "name": "branch:dev:synth",
-      "description": "Synth the stacks on the DEV account",
-      "env": {
-        "CDK_DEFAULT_ACCOUNT": "987654321012",
-        "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
-        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
-      },
-      "steps": [
-        {
-          "exec": "cdk synth"
-        }
-      ]
-    },
     "build": {
       "name": "build",
       "description": "Full release build",
@@ -265,6 +201,66 @@
         }
       ]
     },
+    "githubbranch:dev:deploy": {
+      "name": "githubbranch:dev:deploy",
+      "description": "Deploy the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev",
+        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+      },
+      "steps": [
+        {
+          "exec": "cdk deploy --require-approval never *Stack*"
+        }
+      ]
+    },
+    "githubbranch:dev:destroy": {
+      "name": "githubbranch:dev:destroy",
+      "description": "Destroy the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev",
+        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+      },
+      "steps": [
+        {
+          "exec": "cdk destroy --force *Stack*"
+        }
+      ]
+    },
+    "githubbranch:dev:diff": {
+      "name": "githubbranch:dev:diff",
+      "description": "Diff the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev",
+        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+      },
+      "steps": [
+        {
+          "exec": "cdk diff --require-approval never *Stack*"
+        }
+      ]
+    },
+    "githubbranch:dev:synth": {
+      "name": "githubbranch:dev:synth",
+      "description": "Synth the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev",
+        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+      },
+      "steps": [
+        {
+          "exec": "cdk synth"
+        }
+      ]
+    },
     "install": {
       "name": "install",
       "description": "Install project dependencies and update lockfile (non-frozen)",
@@ -280,6 +276,70 @@
       "steps": [
         {
           "exec": "npm ci"
+        }
+      ]
+    },
+    "localbranch:dev:deploy": {
+      "name": "localbranch:dev:deploy",
+      "description": "Deploy the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev",
+        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
+        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
+      },
+      "steps": [
+        {
+          "exec": "cdk deploy --require-approval never *Stack*"
+        }
+      ]
+    },
+    "localbranch:dev:destroy": {
+      "name": "localbranch:dev:destroy",
+      "description": "Destroy the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev",
+        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
+        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
+      },
+      "steps": [
+        {
+          "exec": "cdk destroy --force *Stack*"
+        }
+      ]
+    },
+    "localbranch:dev:diff": {
+      "name": "localbranch:dev:diff",
+      "description": "Diff the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev",
+        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
+        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
+      },
+      "steps": [
+        {
+          "exec": "cdk diff --require-approval never *Stack*"
+        }
+      ]
+    },
+    "localbranch:dev:synth": {
+      "name": "localbranch:dev:synth",
+      "description": "Synth the stacks on the DEV account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "dev",
+        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
+        "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
+      },
+      "steps": [
+        {
+          "exec": "cdk synth"
         }
       ]
     },

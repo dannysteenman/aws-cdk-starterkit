@@ -130,7 +130,7 @@ function createCdkDestroyWorkflow(
         {
           name: 'Destroy Branch Stack (Workflow Dispatch)',
           if: "github.event_name == 'workflow_dispatch'",
-          run: 'npm run branch:test:destroy',
+          run: 'npm run githubbranch:test:destroy',
           env: {
             GIT_BRANCH_REF: '${{ github.ref_name }}',
           },
@@ -138,7 +138,7 @@ function createCdkDestroyWorkflow(
         {
           name: 'Destroy Branch Stack (Branch Deletion)',
           if: "github.event.ref_type == 'branch' && github.event_name == 'delete'",
-          run: 'npm run branch:test:destroy',
+          run: 'npm run githubbranch:test:destroy',
           env: {
             GIT_BRANCH_REF: '${{ steps.destroy-branch.outputs.DESTROY_BRANCH_NAME }}',
           },
@@ -146,7 +146,7 @@ function createCdkDestroyWorkflow(
         {
           name: 'Destroy Branch Stack (Pull Request Closure)',
           if: "github.event_name == 'pull_request'",
-          run: 'npm run branch:test:destroy',
+          run: 'npm run githubbranch:test:destroy',
           env: {
             GIT_BRANCH_REF: '${{ github.head_ref }}',
           },
