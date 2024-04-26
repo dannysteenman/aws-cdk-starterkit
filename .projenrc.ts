@@ -35,7 +35,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   minNodeVersion: nodeVersion,
   projenrcTs: true,
   release: true,
-  deps: ['aws-cdk-github-oidc'] /* Runtime dependencies of this module. */,
+  deps: ['aws-cdk-github-oidc', 'cloudstructs'] /* Runtime dependencies of this module. */,
   // devDeps: []                /* Build dependencies for this module. */,
   githubOptions: {
     pullRequestLint: false,
