@@ -1,16 +1,16 @@
-import { GithubActionsIdentityProvider, GithubActionsRole } from 'aws-cdk-github-oidc';
-import { CfnOutput, Stack, type StackProps } from 'aws-cdk-lib';
-import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
+import { GithubActionsRole } from 'aws-cdk-github-oidc';
+import * as cdk from 'aws-cdk-lib';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import type { Construct } from 'constructs';
 import { getGitRepositoryDetails } from '../bin/git-helper';
 
-interface GitHubOIDCStackProps extends StackProps {}
+interface GitHubOIDCStackProps extends cdk.StackProps {}
 
 /**
  * A CDK stack that sets up a GitHub Actions OIDC provider and a deployment role.
  * The deployment role is granted the 'AdministratorAccess' managed policy.
  */
-export class GitHubOIDCStack extends Stack {
+export class GitHubOIDCStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: GitHubOIDCStackProps) {
     super(scope, id, props);
 
@@ -18,19 +18,24 @@ export class GitHubOIDCStack extends Stack {
     const { gitOwner, gitRepoName } = getGitRepositoryDetails();
 
     // Create a GitHub Actions OIDC provider
-    const provider = GithubActionsIdentityProvider.fromAccount(this, 'GithubProvider');
+    const openIdConnectProvider = new iam.OpenIdConnectProvider(this, 'GithubProvider', {
+      url: 'https://token.actions.githubusercontent.com',
+      clientIds: ['sts.amazonaws.com'],
+    });
 
     // Create a GitHub Actions deployment role
     const deployRole = new GithubActionsRole(this, 'GitHubDeployRole', {
-      provider: provider,
+      provider: openIdConnectProvider,
       owner: gitOwner,
       repo: gitRepoName,
       roleName: `${process.env.GITHUB_DEPLOY_ROLE}`,
-      managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess')],
+      managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess')],
+      description: 'This role is used via GitHub Actions to deploy the AWS CDK stacks on your AWS account',
+      maxSessionDuration: cdk.Duration.hours(2),
     });
 
     // Output the deployment role ARN
-    new CfnOutput(this, 'DeployRole', {
+    new cdk.CfnOutput(this, 'DeployRole', {
       value: deployRole.roleArn,
     });
   }
