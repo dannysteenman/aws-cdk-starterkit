@@ -50,7 +50,7 @@ function createCdkDeploymentWorkflow(
   const cdkDeploymentWorkflow = new github.GithubWorkflow(gh, `cdk-deploy-${env}${deployForBranch ? '-branch' : ''}`);
   cdkDeploymentWorkflow.on({
     push: deployForBranch
-      ? { branches: ['**', '!main', '!hotfix/*'] }
+      ? { branches: ['**', '!main', '!hotfix/*', '!github-actions/*'] }
       : env !== 'production'
         ? { branches: ['main'] }
         : undefined,

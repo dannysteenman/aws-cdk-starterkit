@@ -7,6 +7,7 @@ on:
       - "**"
       - "!main"
       - "!hotfix/*"
+      - "!github-actions/*"
   workflow_dispatch: {}
 jobs:
   deploy:
