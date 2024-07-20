@@ -67,7 +67,7 @@
   "dependencies": {
     "aws-cdk-github-oidc": "^2.4.1",
     "aws-cdk-lib": "2.149.0",
-    "cloudstructs": "^0.9.10",
+    "cloudstructs": "^0.9.11",
     "constructs": "^10.0.5"
   },
   "engines": {
