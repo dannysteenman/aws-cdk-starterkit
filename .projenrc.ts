@@ -1,5 +1,7 @@
 import { awscdk, github } from 'projen';
+import { DependabotScheduleInterval } from 'projen/lib/github';
 import { NodePackageManager } from 'projen/lib/javascript';
+import { YamlFile } from 'projen/lib/yaml';
 import { createCdkDeploymentWorkflows } from './src/bin/cicd-helper';
 import { addCdkActionTask } from './src/bin/env-helper';
 
@@ -36,7 +38,21 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   projenrcTs: true,
   release: true,
   deps: ['aws-cdk-github-oidc', 'cloudstructs'] /* Runtime dependencies of this module. */,
-  // devDeps: []                /* Build dependencies for this module. */,
+  autoApproveOptions: {
+    allowedUsernames: ['dependabot', 'dependabot[bot]', 'github-bot'],
+  },
+  dependabot: true, // Enable dependabot for the project
+  dependabotOptions: {
+    scheduleInterval: DependabotScheduleInterval.WEEKLY,
+    labels: ['dependencies', 'auto-approve'],
+    groups: {
+      default: {
+        patterns: ['*'],
+        excludePatterns: ['aws-cdk*', 'projen'],
+      },
+    },
+    ignore: [{ dependencyName: 'aws-cdk-lib' }, { dependencyName: 'aws-cdk' }],
+  },
   githubOptions: {
     pullRequestLint: false,
   },
@@ -95,6 +111,12 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     'venv/',
   ],
 });
+
+// Override auto-approve workflow to use the new version when autoApproveOptions is set
+const autoApproveWorkflow = project.tryFindObjectFile('.github/workflows/auto-approve.yml');
+if (autoApproveWorkflow && autoApproveWorkflow instanceof YamlFile) {
+  autoApproveWorkflow.addOverride('jobs.approve.steps.0.uses', 'hmarr/auto-approve-action@v4');
+}
 
 // Define the target AWS accounts for the different environments
 type Environment = 'dev' | 'test' | 'staging' | 'production';

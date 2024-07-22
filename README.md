@@ -26,6 +26,7 @@ Welcome to the starting line of your next AWS CDK project. This repository is cr
 - 📏 **Best Practice Linting**: Adopt coding best practices effortlessly with a pre-configured ESLint setup [.eslintrc.json](./.eslintrc.json), maintaining high code quality and consistency.
 - 🚀 **Enhanced Pull Requests**: Benefit from a built-in, fancy pull request template, making code reviews more structured and informative.
 - 💻 **Branch-based Deployments**: Deploy multiple CDK stacks to the same AWS environments based on the Git branch. This enables you to easily test changes when multiple developers work on the same code base.
+- 📦 **Automated Dependency Management**: Dependabot creates grouped PRs, with auto-approval for passing checks using `hmarr/auto-approve-action@v4`, streamlining updates while maintaining project stability.
 
 ## Setup Guide
 
