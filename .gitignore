@@ -3,6 +3,7 @@
 !/.projen/tasks.json
 !/.projen/deps.json
 !/.projen/files.json
+!/.github/workflows/pull-request-lint.yml
 !/.github/workflows/auto-approve.yml
 !/package.json
 !/LICENSE
@@ -81,7 +82,6 @@ junit.xml
 /cdk.out/
 .cdk.staging/
 .parcel-cache/
-!/.github/workflows/pull-request-lint.yml
 !/.github/workflows/cdk-deploy-dev.yml
 !/.github/workflows/cdk-deploy-dev-branch.yml
 !/.github/workflows/cdk-destroy-dev-branch.yml
