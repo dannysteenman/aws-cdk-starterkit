@@ -39,7 +39,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   release: true,
   deps: ['aws-cdk-github-oidc', 'cloudstructs'] /* Runtime dependencies of this module. */,
   autoApproveOptions: {
-    allowedUsernames: ['dependabot', 'dependabot[bot]', 'github-bot'],
+    allowedUsernames: ['dependabot', 'dependabot[bot]', 'github-bot', 'github-actions[bot]'],
   },
   dependabot: true, // Enable dependabot for the project
   dependabotOptions: {

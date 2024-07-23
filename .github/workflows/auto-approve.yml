@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-    if: contains(github.event.pull_request.labels.*.name, 'auto-approve') && (github.event.pull_request.user.login == 'dependabot' || github.event.pull_request.user.login == 'dependabot[bot]' || github.event.pull_request.user.login == 'github-bot')
+    if: contains(github.event.pull_request.labels.*.name, 'auto-approve') && (github.event.pull_request.user.login == 'dependabot' || github.event.pull_request.user.login == 'dependabot[bot]' || github.event.pull_request.user.login == 'github-bot' || github.event.pull_request.user.login == 'github-actions[bot]')
     steps:
       - uses: hmarr/auto-approve-action@v4
         with:
