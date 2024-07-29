@@ -119,8 +119,8 @@ if (autoApproveWorkflow && autoApproveWorkflow instanceof YamlFile) {
 // Define the target AWS accounts for the different environments
 type Environment = 'dev' | 'test' | 'staging' | 'production';
 const targetAwsAccounts: Record<Environment, string | undefined> = {
-  dev: '987654321012',
-  test: '123456789012',
+  dev: '063936901313',
+  test: undefined,
   staging: undefined,
   production: undefined,
 };

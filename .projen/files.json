@@ -8,7 +8,6 @@
     ".github/workflows/build.yml",
     ".github/workflows/cdk-deploy-dev-branch.yml",
     ".github/workflows/cdk-deploy-dev.yml",
-    ".github/workflows/cdk-deploy-test.yml",
     ".github/workflows/cdk-destroy-dev-branch.yml",
     ".github/workflows/pull-request-lint.yml",
     ".github/workflows/release.yml",

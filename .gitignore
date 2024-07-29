@@ -85,5 +85,4 @@ junit.xml
 !/.github/workflows/cdk-deploy-dev.yml
 !/.github/workflows/cdk-deploy-dev-branch.yml
 !/.github/workflows/cdk-destroy-dev-branch.yml
-!/.github/workflows/cdk-deploy-test.yml
 !/.projenrc.ts
