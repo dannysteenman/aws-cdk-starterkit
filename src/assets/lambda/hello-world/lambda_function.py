@@ -1,2 +1,2 @@
 def lambda_handler(event, context):
-    return "Helloo World!!!"
+    return "Hellooo World!!!"
