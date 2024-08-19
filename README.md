@@ -1,4 +1,4 @@
-# [![AWS CDK Starterkit header](https://raw.githubusercontent.com/dannysteenman/aws-cdk-starterkit/main/icons/github-header-image.png)](https://towardsthecloud.com)
+# [![AWS CDK Starterkit header](./icons/github-header-image.png)](https://towardsthecloud.com)
 
 # AWS CDK Starterkit
 
@@ -13,7 +13,7 @@
 Welcome to the starting line of your next AWS CDK project. This repository is crafted to supercharge your project's setup with AWS CDK TypeScript, projen, and GitHub actions, ensuring a smooth and efficient deployment to your AWS account.
 
 > [!TIP]
-> [Unlock AWS CDK's Full Potential - Partner with Us!](#unlock-aws-cdks-full-potential---partner-with-us)
+> [Unlock the full potention of your infrastructure - Partner with Us!](#unlock-the-full-potention-of-your-infrastructure---partner-with-us)
 
 ## Features
 
@@ -143,14 +143,14 @@ When you create a new feature branch and push it to the repository, the GitHub A
 
 Additionally, the workflow includes a separate task to destroy the CDK stacks for the feature branch when the branch is deleted or the pull request is closed, ensuring that the resources are cleaned up after the testing is complete.
 
-## Unlock AWS CDK's Full Potential - Partner with Us!
+## Unlock the full potention of your infrastructure - Partner with us!
 
 > [!TIP]
-> In the ever-evolving cloud landscape, your infrastructure should be your greatest asset, not your biggest headache. At [Towards the Cloud](https://towardsthecloud.com), we transform complex AWS challenges into powerful, scalable solutions.
+> Supercharge Your AWS Infrastructure with [Towards the Cloud](https://towardsthecloud.com). We ship well-architected, resilient, and cost-optimized AWS solutions designed to scale using Infrastructure as Code (IaC), tailoring cloud-native systems for businesses of all sizes.
 >
 > Our Approach:
 >
-> - **Tailored CDK Solutions**: Custom-built for your unique business needs
+> - **Tailored AWS Solutions**: Custom-built for your unique business needs
 > - **Future-Proof Architecture**: Scalable designs that grow with you
 > - **Empowerment Through Ownership**: Your vision, your infrastructure, our expertise
 >

@@ -30,17 +30,22 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   authorOrganization: true,
   name: 'aws-cdk-starterkit',
   description: 'Create and deploy an AWS CDK app on your AWS account in less than 5 minutes using GitHub actions!',
-  cdkVersion: '2.150.0', // Find the latest CDK version here: https://www.npmjs.com/package/aws-cdk-lib
+  cdkVersion: '2.152.0', // Find the latest CDK version here: https://www.npmjs.com/package/aws-cdk-lib
   cdkVersionPinning: true,
   defaultReleaseBranch: 'main',
   packageManager: NodePackageManager.NPM,
   minNodeVersion: nodeVersion,
-  projenVersion: '0.84.8', // Find the latest projen version here: https://www.npmjs.com/package/projen
+  projenVersion: '0.85.2', // Find the latest projen version here: https://www.npmjs.com/package/projen
   projenrcTs: true,
   release: true,
   deps: ['aws-cdk-github-oidc', 'cloudstructs'] /* Runtime dependencies of this module. */,
   autoApproveOptions: {
     allowedUsernames: ['dependabot', 'dependabot[bot]', 'github-bot', 'github-actions[bot]'],
+    /**
+     * The name of the secret that has the GitHub PAT for auto-approving PRs.
+     * Generate a new PAT (https://github.com/settings/tokens/new) and add it to your repo's secrets
+     */
+    secret: 'PROJEN_GITHUB_TOKEN',
   },
   dependabot: true,
   dependabotOptions: {
@@ -53,6 +58,13 @@ const project = new awscdk.AwsCdkTypeScriptApp({
       },
     },
     ignore: [{ dependencyName: 'aws-cdk-lib' }, { dependencyName: 'aws-cdk' }],
+  },
+  githubOptions: {
+    pullRequestLintOptions: {
+      semanticTitleOptions: {
+        types: ['feat', 'fix', 'build', 'chore', 'ci', 'docs', 'style', 'refactor'],
+      },
+    },
   },
   pullRequestTemplateContents: [
     '## Pull request checklist\n',
