@@ -69,7 +69,6 @@ junit.xml
 !/.github/workflows/release.yml
 !/.mergify.yml
 !/.github/dependabot.yml
-!/.github/pull_request_template.md
 !/test/
 !/tsconfig.json
 !/tsconfig.dev.json

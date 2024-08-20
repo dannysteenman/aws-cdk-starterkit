@@ -24,7 +24,6 @@ Welcome to the starting line of your next AWS CDK project. This repository is cr
 - 🛡️ **Seamless Security**: Leverage OpenID Connect for secure AWS deployments. Authenticate your GitHub Actions workflows directly with AWS, eliminating the need for stored credentials or long-lived secrets.
 - 🧹 **Preconfigured TypeScript Excellence**: Hit the ground running with pre-set compiler options in [tsconfig.json](./tsconfig.json), ensuring your code is clean, efficient, and error-free from the start.
 - 📏 **Best Practice Linting**: Adopt coding best practices effortlessly with a pre-configured ESLint setup [.eslintrc.json](./.eslintrc.json), maintaining high code quality and consistency.
-- 🚀 **Enhanced Pull Requests**: Benefit from a built-in, fancy pull request template, making code reviews more structured and informative.
 - 💻 **Branch-based Deployments**: Deploy multiple CDK stacks to the same AWS environments based on the Git branch. This enables you to easily test changes when multiple developers work on the same code base.
 - 📦 **Automated Dependency Management**: Dependabot creates grouped PRs, with auto-approval for passing checks using `hmarr/auto-approve-action@v4`, streamlining updates while maintaining project stability.
 
@@ -89,6 +88,27 @@ Here’s a closer look at how this structure enhances maintainability and scalab
 
 ```bash
 .
+├── .eslintrc.json
+├── .gitattributes
+├── .github
+│  ├── dependabot.yml
+│  └── workflows
+│     ├── auto-approve.yml
+│     ├── build.yml
+│     ├── cdk-deploy-dev-branch.yml
+│     ├── cdk-deploy-dev.yml
+│     ├── cdk-deploy-test.yml
+│     ├── cdk-destroy-dev-branch.yml
+│     ├── pull-request-lint.yml
+│     └── release.yml
+├── .gitignore
+├── .mergify.yml
+├── .npmignore
+├── .projen
+│  ├── deps.json
+│  ├── files.json
+│  └── tasks.json
+├── .projenrc.ts
 ├── cdk.context.json
 ├── cdk.json
 ├── LICENSE
@@ -98,10 +118,10 @@ Here’s a closer look at how this structure enhances maintainability and scalab
 ├── src
 │  ├── assets
 │  │  ├── ecs
-│  │  │  └── hello-world
+│  │  │  └── example-container
 │  │  │     └── Dockerfile
 │  │  └── lambda
-│  │     └── hello-world
+│  │     └── example-lambda-function
 │  │        └── lambda_function.py
 │  ├── bin
 │  │  ├── cicd-helper.ts
@@ -110,12 +130,15 @@ Here’s a closer look at how this structure enhances maintainability and scalab
 │  ├── constructs
 │  │  ├── base-construct.ts
 │  │  ├── index.ts
-│  │  └── network-construct.ts
+│  │  ├── network-construct.ts
+│  │  └── README.md
 │  ├── main.ts
 │  └── stacks
 │     ├── base-stack.ts
 │     ├── github-oidc-stack.ts
-│     └── index.ts
+│     ├── index.ts
+│     ├── README.md
+│     └── toolkit-cleaner-stack.ts
 ├── test
 │  ├── __snapshots__
 │  │  └── main.test.ts.snap

@@ -7,7 +7,7 @@
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole",
         "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
       },
       "steps": [
@@ -23,7 +23,7 @@
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole",
         "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
       },
       "steps": [
@@ -39,7 +39,7 @@
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole",
         "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
       },
       "steps": [
@@ -55,7 +55,7 @@
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole",
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole",
         "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
       },
       "steps": [
@@ -181,7 +181,7 @@
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
         {
@@ -196,7 +196,7 @@
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
         {
@@ -211,7 +211,7 @@
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
         {
@@ -226,7 +226,7 @@
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
         {
@@ -272,7 +272,7 @@
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
         {
@@ -377,7 +377,7 @@
         "CDK_DEFAULT_ACCOUNT": "123456789012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "test",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
         {
@@ -392,7 +392,7 @@
         "CDK_DEFAULT_ACCOUNT": "123456789012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "test",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
         {
@@ -407,7 +407,7 @@
         "CDK_DEFAULT_ACCOUNT": "123456789012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "test",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
         {
@@ -422,7 +422,7 @@
         "CDK_DEFAULT_ACCOUNT": "123456789012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "test",
-        "GITHUB_DEPLOY_ROLE": "GitHubDeployRole"
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
         {

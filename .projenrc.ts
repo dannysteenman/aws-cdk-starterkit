@@ -16,9 +16,9 @@ const awsRegion = process.env.AWS_REGION || 'us-east-1';
  * Define the name of the GitHub deploy role that will be created by the GitHubOIDCStack.
  * Set this as an environment variable for the projen tasks, so other parts of the project
  * can reference the role name.
- * The default role name is 'GitHubDeployRole'.
+ * The default role name is 'GitHubActionsServiceRole'.
  */
-const githubRole = 'GitHubDeployRole';
+const githubRole = 'GitHubActionsServiceRole';
 
 /**
  * Creates a new AWS CDK TypeScript application project.
@@ -30,7 +30,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   authorOrganization: true,
   name: 'aws-cdk-starterkit',
   description: 'Create and deploy an AWS CDK app on your AWS account in less than 5 minutes using GitHub actions!',
-  cdkVersion: '2.152.0', // Find the latest CDK version here: https://www.npmjs.com/package/aws-cdk-lib
+  cdkVersion: '2.153.0', // Find the latest CDK version here: https://www.npmjs.com/package/aws-cdk-lib
   cdkVersionPinning: true,
   defaultReleaseBranch: 'main',
   packageManager: NodePackageManager.NPM,
@@ -39,6 +39,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   projenrcTs: true,
   release: true,
   deps: ['aws-cdk-github-oidc', 'cloudstructs'] /* Runtime dependencies of this module. */,
+  pullRequestTemplate: false,
   autoApproveOptions: {
     allowedUsernames: ['dependabot', 'dependabot[bot]', 'github-bot', 'github-actions[bot]'],
     /**
@@ -66,27 +67,6 @@ const project = new awscdk.AwsCdkTypeScriptApp({
       },
     },
   },
-  pullRequestTemplateContents: [
-    '## Pull request checklist\n',
-    'Please check if your PR fulfills the following requirements:\n',
-    '- [ ] Docstrings or comments have been reviewed and added/updated if needed.',
-    '- [ ] The change has been tested and confirmed working.\n',
-    '## Pull request type\n',
-    '<!-- Please do not submit updates to dependencies unless it fixes an issue. -->\n',
-    '<!-- Please try to limit your pull request to one type, submit multiple pull requests if needed. -->\n',
-    'Please check the type of change your PR introduces:\n',
-    '- [ ] Bugfix (if its an open issue, please add the issue number).',
-    '- [ ] Feature (e.g., new script).',
-    '- [ ] Code style update (formatting, renaming).',
-    '- [ ] Refactoring (no functional changes, no API changes).',
-    '- [ ] Build related changes (build scripts, build configs, etc.).',
-    '- [ ] Documentation content changes.',
-    '- [ ] Other (please describe):\n',
-    '## Pull request description\n',
-    '<!-- Please describe your changes here. -->\n',
-    '## Related issues\n',
-    '<!-- If this PR addresses an existing issue, please provide the issue number here -->\n',
-  ],
   gitignore: [
     '__pycache__',
     '__pycache__/',
