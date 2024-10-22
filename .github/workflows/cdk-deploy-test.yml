@@ -29,7 +29,15 @@ jobs:
           aws-region: us-east-1
       - name: Install dependencies
         run: npm ci
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64,amd64
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Run CDK synth for the TEST environment
         run: npm run test:synth
       - name: Deploy CDK to the TEST environment on AWS account 123456789012
+        env:
+          DOCKER_BUILDKIT: "1"
         run: npm run test:deploy

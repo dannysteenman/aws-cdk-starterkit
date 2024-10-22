@@ -74,6 +74,20 @@ function createCdkDeploymentWorkflow(
 
   const commonWorkflowSteps = getCommonWorkflowSteps(account, region, githubDeployRole, nodeVersion);
 
+  const dockerSetupSteps = [
+    {
+      name: 'Setup QEMU',
+      uses: 'docker/setup-qemu-action@v3',
+      with: {
+        platforms: 'arm64,amd64',
+      },
+    },
+    {
+      name: 'Setup Docker Buildx',
+      uses: 'docker/setup-buildx-action@v3',
+    },
+  ];
+
   const deploymentSteps = [
     {
       name: `Run CDK synth for the ${env.toUpperCase()} environment`,
@@ -82,6 +96,9 @@ function createCdkDeploymentWorkflow(
     {
       name: `Deploy CDK to the ${env.toUpperCase()} environment on AWS account ${account}`,
       run: deployForBranch ? `npm run branch:${env}:deploy` : `npm run ${env}:deploy`,
+      env: {
+        DOCKER_BUILDKIT: '1',
+      },
     },
   ];
 
@@ -90,7 +107,7 @@ function createCdkDeploymentWorkflow(
       name: `Deploy CDK stacks to ${env} AWS account${deployForBranch ? ' (Branch)' : ''}`,
       runsOn: COMMON_RUNS_ON,
       permissions: COMMON_WORKFLOW_PERMISSIONS,
-      steps: [...commonWorkflowSteps, ...deploymentSteps],
+      steps: [...commonWorkflowSteps, ...dockerSetupSteps, ...deploymentSteps],
     },
   });
 
