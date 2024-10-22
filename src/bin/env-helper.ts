@@ -75,15 +75,25 @@ export function extractCleanedBranchName(gitBranchRef: string | undefined): stri
 }
 
 /**
- * Generates a unique resource name that includes a branch suffix, if available, or an environment suffix.
+ * Generates a unique resource name that includes a branch suffix for branch-based deployments.
  * The generated name has a maximum length of 64 characters.
  * @param baseName - The base name for the resource.
- * @returns A unique resource name with a branch or environment suffix.
+ * @returns A unique resource name with a branch suffix if available, or just the base name.
+ * @throws Error if GIT_BRANCH_REF is "main".
  */
 export function generateUniqueResourceName(baseName: string): string {
-  const branchName = extractCleanedBranchName(process.env.GIT_BRANCH_REF);
-  const environment = process.env.ENVIRONMENT || 'dev';
-  const resourceName = branchName ? `${baseName}-${branchName}` : `${baseName}-${environment}`;
+  const branchName = process.env.GIT_BRANCH_REF;
+
+  if (branchName && branchName.toLowerCase() === 'main') {
+    throw new Error('Invalid branch-based deployment: GIT_BRANCH_REF cannot be "main"');
+  }
+
+  let resourceName = baseName;
+
+  if (branchName) {
+    const cleanedBranchName = extractCleanedBranchName(branchName);
+    resourceName = `${baseName}-${cleanedBranchName}`;
+  }
 
   if (resourceName.length <= 64) {
     return resourceName;
