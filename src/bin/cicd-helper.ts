@@ -1,6 +1,17 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { github } from 'projen';
 
+// Common workflow configurations
+const COMMON_WORKFLOW_PERMISSIONS = {
+  actions: github.workflows.JobPermission.WRITE,
+  contents: github.workflows.JobPermission.READ,
+  idToken: github.workflows.JobPermission.WRITE,
+};
+
+const COMMON_RUNS_ON = ['ubuntu-latest'];
+
+const BRANCH_EXCLUSIONS = ['main', 'hotfix/*', 'github-actions/*', 'dependabot/**'];
+
 /**
  * Creates GitHub workflows for deploying and destroying AWS CDK stacks.
  * @param gh - An instance of the `github.GitHub` class, used to create the GitHub workflows.
@@ -47,37 +58,39 @@ function createCdkDeploymentWorkflow(
   nodeVersion: string,
   deployForBranch: boolean,
 ): github.GithubWorkflow {
-  const cdkDeploymentWorkflow = new github.GithubWorkflow(gh, `cdk-deploy-${env}${deployForBranch ? '-branch' : ''}`);
-  cdkDeploymentWorkflow.on({
+  const workflowName = `cdk-deploy-${env}${deployForBranch ? '-branch' : ''}`;
+  const cdkDeploymentWorkflow = new github.GithubWorkflow(gh, workflowName);
+
+  const workflowTriggers = {
     push: deployForBranch
-      ? { branches: ['**', '!main', '!hotfix/*', '!github-actions/*'] }
+      ? { branches: ['**', ...BRANCH_EXCLUSIONS.map((branch) => `!${branch}`)] }
       : env !== 'production'
         ? { branches: ['main'] }
         : undefined,
     workflowDispatch: {},
-  });
+  };
+
+  cdkDeploymentWorkflow.on(workflowTriggers);
 
   const commonWorkflowSteps = getCommonWorkflowSteps(account, region, githubDeployRole, nodeVersion);
+
+  const deploymentSteps = [
+    {
+      name: `Run CDK synth for the ${env.toUpperCase()} environment`,
+      run: deployForBranch ? `npm run branch:${env}:synth` : `npm run ${env}:synth`,
+    },
+    {
+      name: `Deploy CDK to the ${env.toUpperCase()} environment on AWS account ${account}`,
+      run: deployForBranch ? `npm run branch:${env}:deploy` : `npm run ${env}:deploy`,
+    },
+  ];
 
   cdkDeploymentWorkflow.addJobs({
     deploy: {
       name: `Deploy CDK stacks to ${env} AWS account${deployForBranch ? ' (Branch)' : ''}`,
-      runsOn: ['ubuntu-latest'],
-      permissions: {
-        actions: github.workflows.JobPermission.WRITE,
-        contents: github.workflows.JobPermission.READ,
-        idToken: github.workflows.JobPermission.WRITE,
-      },
-      steps: commonWorkflowSteps.concat([
-        {
-          name: `Run CDK synth for the ${env.toUpperCase()} environment`,
-          run: deployForBranch ? `npm run branch:${env}:synth` : `npm run ${env}:synth`,
-        },
-        {
-          name: `Deploy CDK to the ${env.toUpperCase()} environment on AWS account ${account}`,
-          run: deployForBranch ? `npm run branch:${env}:deploy` : `npm run ${env}:deploy`,
-        },
-      ]),
+      runsOn: COMMON_RUNS_ON,
+      permissions: COMMON_WORKFLOW_PERMISSIONS,
+      steps: [...commonWorkflowSteps, ...deploymentSteps],
     },
   });
 
@@ -102,56 +115,64 @@ function createCdkDestroyWorkflow(
   githubDeployRole: string,
   nodeVersion: string,
 ): github.GithubWorkflow {
-  const cdkDestroyWorkflow = new github.GithubWorkflow(gh, `cdk-destroy-${env}-branch`);
-  cdkDestroyWorkflow.on({
+  const workflowName = `cdk-destroy-${env}-branch`;
+  const cdkDestroyWorkflow = new github.GithubWorkflow(gh, workflowName);
+
+  const workflowTriggers = {
     workflowDispatch: {},
-    delete: {},
-  });
+    delete: {
+      branches: ['**', ...BRANCH_EXCLUSIONS.map((branch) => `!${branch}`)],
+    },
+  };
+
+  cdkDestroyWorkflow.on(workflowTriggers);
 
   const commonWorkflowSteps = getCommonWorkflowSteps(account, region, githubDeployRole, nodeVersion);
+
+  const destroySteps = [
+    {
+      name: 'Fetch Deleted Branch Name',
+      id: 'destroy-branch',
+      if: "github.event.ref_type == 'branch' && github.event_name == 'delete'",
+      run: 'BRANCH=$(cat ${{ github.event_path }} | jq --raw-output \'.ref\'); echo "${{ github.repository }} has ${BRANCH} branch"; echo "DESTROY_BRANCH_NAME=$BRANCH" >> $GITHUB_OUTPUT',
+    },
+    {
+      name: 'Destroy Branch Stack (Workflow Dispatch)',
+      if: "github.event_name == 'workflow_dispatch'",
+      run: `npm run githubbranch:${env}:destroy`,
+      env: {
+        GIT_BRANCH_REF: '${{ github.ref_name }}',
+      },
+    },
+    {
+      name: 'Destroy Branch Stack (Branch Deletion)',
+      if: "github.event.ref_type == 'branch' && github.event_name == 'delete'",
+      run: `npm run githubbranch:${env}:destroy`,
+      env: {
+        GIT_BRANCH_REF: '${{ steps.destroy-branch.outputs.DESTROY_BRANCH_NAME }}',
+      },
+    },
+    {
+      name: 'Destroy Branch Stack (Pull Request Closure)',
+      if: "github.event_name == 'pull_request'",
+      run: `npm run githubbranch:${env}:destroy`,
+      env: {
+        GIT_BRANCH_REF: '${{ github.head_ref }}',
+      },
+    },
+  ];
 
   cdkDestroyWorkflow.addJobs({
     destroy: {
       name: 'Remove deployment of feature branch',
       if: "github.head_ref != 'main' || (github.event.ref_type == 'branch' && github.event_name == 'delete') || github.event_name == 'workflow_dispatch'",
-      runsOn: ['ubuntu-latest'],
+      runsOn: COMMON_RUNS_ON,
       permissions: {
         idToken: github.workflows.JobPermission.WRITE,
         contents: github.workflows.JobPermission.READ,
         packages: github.workflows.JobPermission.READ,
       },
-      steps: commonWorkflowSteps.concat([
-        {
-          name: 'Fetch Deleted Branch Name',
-          id: 'destroy-branch',
-          if: "github.event.ref_type == 'branch' && github.event_name == 'delete'",
-          run: 'BRANCH=$(cat ${{ github.event_path }} | jq --raw-output \'.ref\'); echo "${{ github.repository }} has ${BRANCH} branch"; echo "DESTROY_BRANCH_NAME=$BRANCH" >> $GITHUB_OUTPUT',
-        },
-        {
-          name: 'Destroy Branch Stack (Workflow Dispatch)',
-          if: "github.event_name == 'workflow_dispatch'",
-          run: `npm run githubbranch:${env}:destroy`,
-          env: {
-            GIT_BRANCH_REF: '${{ github.ref_name }}',
-          },
-        },
-        {
-          name: 'Destroy Branch Stack (Branch Deletion)',
-          if: "github.event.ref_type == 'branch' && github.event_name == 'delete'",
-          run: `npm run githubbranch:${env}:destroy`,
-          env: {
-            GIT_BRANCH_REF: '${{ steps.destroy-branch.outputs.DESTROY_BRANCH_NAME }}',
-          },
-        },
-        {
-          name: 'Destroy Branch Stack (Pull Request Closure)',
-          if: "github.event_name == 'pull_request'",
-          run: `npm run githubbranch:${env}:destroy`,
-          env: {
-            GIT_BRANCH_REF: '${{ github.head_ref }}',
-          },
-        },
-      ]),
+      steps: [...commonWorkflowSteps, ...destroySteps],
     },
   });
 
@@ -182,7 +203,7 @@ function getCommonWorkflowSteps(
       uses: 'actions/setup-node@v4',
       with: {
         'node-version': nodeVersion ? `>=${nodeVersion}` : undefined,
-        'cache': 'npm',
+        cache: 'npm',
       },
     },
     {

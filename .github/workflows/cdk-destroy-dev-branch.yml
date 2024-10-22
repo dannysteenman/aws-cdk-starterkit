@@ -3,7 +3,13 @@
 name: cdk-destroy-dev-branch
 on:
   workflow_dispatch: {}
-  delete: {}
+  delete:
+    branches:
+      - "**"
+      - "!main"
+      - "!hotfix/*"
+      - "!github-actions/*"
+      - "!dependabot/**"
 jobs:
   destroy:
     name: Remove deployment of feature branch
