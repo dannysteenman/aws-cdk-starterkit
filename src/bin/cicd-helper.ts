@@ -205,7 +205,7 @@ function getCommonWorkflowSteps(
       uses: 'actions/setup-node@v4',
       with: {
         'node-version': nodeVersion ? `>=${nodeVersion}` : undefined,
-        cache: 'npm',
+        'cache': 'npm',
       },
     },
     {
