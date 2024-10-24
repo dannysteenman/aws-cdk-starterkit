@@ -48,19 +48,18 @@ All the config that is needed to personalise the CDK App to your environment is 
 Default to us-east-1 if AWS_REGION is not set in your environment variables */
 const awsRegion = process.env.AWS_REGION || 'us-east-1';
 
-/* Set the CDK_DEFAULT_REGION environment variable for the projen tasks,
-so the CDK CLI knows which region to use */
-project.tasks.addEnvironment('CDK_DEFAULT_REGION', awsRegion);
-
 // Define the target AWS accounts for the different environments
-type Environment = 'dev' | 'test' | 'staging' | 'production';
-const targetAccounts: Record<Environment, string | undefined> = {
-  dev: '987654321012',
-  test: '123456789012',
-  staging: undefined,
-  production: undefined,
+type Environment = 'test' | 'production';
+
+interface EnvironmentConfig {
+  accountId: string;
+  enableBranchDeploy: boolean;
+}
+
+const environmentConfigs: Record<Environment, EnvironmentConfig> = {
+  test: { accountId: '987654321012', enableBranchDeploy: true },
+  production: { accountId: '123456789012', enableBranchDeploy: false },
 };
-```
 
 5. Run `npx projen` to generate the github actions workflow files.
 
@@ -94,15 +93,13 @@ Here’s a closer look at how this structure enhances maintainability and scalab
 │  ├── dependabot.yml
 │  └── workflows
 │     ├── auto-approve.yml
-│     ├── build.yml
-│     ├── cdk-deploy-dev-branch.yml
-│     ├── cdk-deploy-dev.yml
+│     ├── cdk-deploy-production.yml
+│     ├── cdk-deploy-test-branch.yml
 │     ├── cdk-deploy-test.yml
-│     ├── cdk-destroy-dev-branch.yml
+│     ├── cdk-destroy-test-branch.yml
 │     ├── pull-request-lint.yml
 │     └── release.yml
 ├── .gitignore
-├── .mergify.yml
 ├── .npmignore
 ├── .projen
 │  ├── deps.json
