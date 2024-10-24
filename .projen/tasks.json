@@ -1,12 +1,12 @@
 {
   "tasks": {
-    "branch:dev:deploy": {
-      "name": "branch:dev:deploy",
-      "description": "Deploy the stacks on the DEV account",
+    "branch:test:deploy": {
+      "name": "branch:test:deploy",
+      "description": "Deploy the stacks on the TEST account",
       "env": {
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
+        "ENVIRONMENT": "test",
         "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole",
         "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
       },
@@ -16,13 +16,13 @@
         }
       ]
     },
-    "branch:dev:destroy": {
-      "name": "branch:dev:destroy",
-      "description": "Destroy the stacks on the DEV account",
+    "branch:test:destroy": {
+      "name": "branch:test:destroy",
+      "description": "Destroy the stacks on the TEST account",
       "env": {
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
+        "ENVIRONMENT": "test",
         "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole",
         "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
       },
@@ -32,13 +32,13 @@
         }
       ]
     },
-    "branch:dev:diff": {
-      "name": "branch:dev:diff",
-      "description": "Diff the stacks on the DEV account",
+    "branch:test:diff": {
+      "name": "branch:test:diff",
+      "description": "Diff the stacks on the TEST account",
       "env": {
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
+        "ENVIRONMENT": "test",
         "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole",
         "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
       },
@@ -48,13 +48,13 @@
         }
       ]
     },
-    "branch:dev:synth": {
-      "name": "branch:dev:synth",
-      "description": "Synth the stacks on the DEV account",
+    "branch:test:synth": {
+      "name": "branch:test:synth",
+      "description": "Synth the stacks on the TEST account",
       "env": {
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
+        "ENVIRONMENT": "test",
         "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole",
         "GIT_BRANCH_REF": "$(git rev-parse --abbrev-ref HEAD)"
       },
@@ -174,66 +174,6 @@
         }
       ]
     },
-    "dev:deploy": {
-      "name": "dev:deploy",
-      "description": "Deploy the stacks on the DEV account",
-      "env": {
-        "CDK_DEFAULT_ACCOUNT": "987654321012",
-        "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
-      },
-      "steps": [
-        {
-          "exec": "cdk deploy --require-approval never *Stack*"
-        }
-      ]
-    },
-    "dev:destroy": {
-      "name": "dev:destroy",
-      "description": "Destroy the stacks on the DEV account",
-      "env": {
-        "CDK_DEFAULT_ACCOUNT": "987654321012",
-        "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
-      },
-      "steps": [
-        {
-          "exec": "cdk destroy --force *Stack*"
-        }
-      ]
-    },
-    "dev:diff": {
-      "name": "dev:diff",
-      "description": "Diff the stacks on the DEV account",
-      "env": {
-        "CDK_DEFAULT_ACCOUNT": "987654321012",
-        "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
-      },
-      "steps": [
-        {
-          "exec": "cdk diff --require-approval never *Stack*"
-        }
-      ]
-    },
-    "dev:synth": {
-      "name": "dev:synth",
-      "description": "Synth the stacks on the DEV account",
-      "env": {
-        "CDK_DEFAULT_ACCOUNT": "987654321012",
-        "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
-        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
-      },
-      "steps": [
-        {
-          "exec": "cdk synth"
-        }
-      ]
-    },
     "diff": {
       "name": "diff",
       "description": "Diffs the currently deployed app against your code",
@@ -265,13 +205,13 @@
         }
       ]
     },
-    "githubbranch:dev:destroy": {
-      "name": "githubbranch:dev:destroy",
-      "description": "Destroy the stacks on the DEV account",
+    "githubbranch:test:destroy": {
+      "name": "githubbranch:test:destroy",
+      "description": "Destroy the stacks on the TEST account",
       "env": {
         "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
-        "ENVIRONMENT": "dev",
+        "ENVIRONMENT": "test",
         "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
       },
       "steps": [
@@ -314,6 +254,66 @@
     "pre-compile": {
       "name": "pre-compile",
       "description": "Prepare the project for compilation"
+    },
+    "production:deploy": {
+      "name": "production:deploy",
+      "description": "Deploy the stacks on the PRODUCTION account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "production",
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
+      },
+      "steps": [
+        {
+          "exec": "cdk deploy --require-approval never *Stack*"
+        }
+      ]
+    },
+    "production:destroy": {
+      "name": "production:destroy",
+      "description": "Destroy the stacks on the PRODUCTION account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "production",
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
+      },
+      "steps": [
+        {
+          "exec": "cdk destroy --force *Stack*"
+        }
+      ]
+    },
+    "production:diff": {
+      "name": "production:diff",
+      "description": "Diff the stacks on the PRODUCTION account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "production",
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
+      },
+      "steps": [
+        {
+          "exec": "cdk diff --require-approval never *Stack*"
+        }
+      ]
+    },
+    "production:synth": {
+      "name": "production:synth",
+      "description": "Synth the stacks on the PRODUCTION account",
+      "env": {
+        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_REGION": "us-east-1",
+        "ENVIRONMENT": "production",
+        "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
+      },
+      "steps": [
+        {
+          "exec": "cdk synth"
+        }
+      ]
     },
     "release": {
       "name": "release",
@@ -374,7 +374,7 @@
       "name": "test:deploy",
       "description": "Deploy the stacks on the TEST account",
       "env": {
-        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "test",
         "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
@@ -389,7 +389,7 @@
       "name": "test:destroy",
       "description": "Destroy the stacks on the TEST account",
       "env": {
-        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "test",
         "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
@@ -404,7 +404,7 @@
       "name": "test:diff",
       "description": "Diff the stacks on the TEST account",
       "env": {
-        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "test",
         "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"
@@ -419,7 +419,7 @@
       "name": "test:synth",
       "description": "Synth the stacks on the TEST account",
       "env": {
-        "CDK_DEFAULT_ACCOUNT": "123456789012",
+        "CDK_DEFAULT_ACCOUNT": "987654321012",
         "CDK_DEFAULT_REGION": "us-east-1",
         "ENVIRONMENT": "test",
         "GITHUB_DEPLOY_ROLE": "GitHubActionsServiceRole"

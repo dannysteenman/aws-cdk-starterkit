@@ -109,12 +109,16 @@ if (autoApproveWorkflow && autoApproveWorkflow instanceof YamlFile) {
 }
 
 // Define the target AWS accounts for the different environments
-type Environment = 'dev' | 'test' | 'staging' | 'production';
-const targetAwsAccounts: Record<Environment, string | undefined> = {
-  dev: '987654321012',
-  test: '123456789012',
-  staging: undefined,
-  production: undefined,
+type Environment = 'test' | 'production';
+
+interface EnvironmentConfig {
+  accountId: string;
+  enableBranchDeploy: boolean;
+}
+
+const environmentConfigs: Record<Environment, EnvironmentConfig> = {
+  test: { accountId: '987654321012', enableBranchDeploy: true },
+  production: { accountId: '123456789012', enableBranchDeploy: false },
 };
 
 /* Add npm run commands that you can use to deploy to each environment
@@ -123,32 +127,36 @@ The `cdkDeploymentTask` function is defined in the `src/bin/helper.ts` file
 You can now run a command like: `npm run dev:synth` to synthesize your aws cdk dev stacks */
 const github = project.github;
 if (github) {
-  for (const [env, awsAccount] of Object.entries(targetAwsAccounts)) {
-    if (awsAccount) {
-      // Adds customized 'npm run' commands for executing cdk synth, test, deploy and diff for each environment
+  for (const [env, config] of Object.entries(environmentConfigs) as [Environment, EnvironmentConfig][]) {
+    // Adds customized 'npm run' commands for executing cdk synth, test, deploy and diff for each environment
+    addCdkActionTask(project, {
+      CDK_DEFAULT_ACCOUNT: config.accountId,
+      CDK_DEFAULT_REGION: awsRegion,
+      ENVIRONMENT: env,
+      GITHUB_DEPLOY_ROLE: githubRole,
+    });
+
+    // If branch deployment is enabled for this environment, add the GIT_BRANCH_REF task
+    if (config.enableBranchDeploy) {
       addCdkActionTask(project, {
-        CDK_DEFAULT_ACCOUNT: awsAccount,
+        CDK_DEFAULT_ACCOUNT: config.accountId,
         CDK_DEFAULT_REGION: awsRegion,
         ENVIRONMENT: env,
         GITHUB_DEPLOY_ROLE: githubRole,
+        GIT_BRANCH_REF: '$(git rev-parse --abbrev-ref HEAD)',
       });
-
-      // Adds GitHub action workflows for deploying the CDK stacks to the target AWS account
-      createCdkDeploymentWorkflows(github, awsAccount, awsRegion, env, githubRole, nodeVersion);
-
-      // Adds a separate task with the GIT_BRANCH_REF env variable for the dev environment
-      if (env === 'dev') {
-        addCdkActionTask(project, {
-          CDK_DEFAULT_ACCOUNT: awsAccount,
-          CDK_DEFAULT_REGION: awsRegion,
-          ENVIRONMENT: env,
-          GITHUB_DEPLOY_ROLE: githubRole,
-          GIT_BRANCH_REF: '$(git rev-parse --abbrev-ref HEAD)',
-        });
-        const isBranchDeployment = true;
-        createCdkDeploymentWorkflows(github, awsAccount, awsRegion, env, githubRole, nodeVersion, isBranchDeployment);
-      }
     }
+
+    // Adds GitHub action workflows for deploying the CDK stacks to the target AWS account
+    createCdkDeploymentWorkflows(
+      github,
+      config.accountId,
+      awsRegion,
+      env,
+      githubRole,
+      nodeVersion,
+      config.enableBranchDeploy,
+    );
   }
 }
 

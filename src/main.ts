@@ -32,6 +32,7 @@ if (!process.env.GIT_BRANCH_REF) {
    */
   new GitHubOIDCStack(app, generateUniqueResourceName('GitHubOIDCStack'), {
     env: awsEnvironment,
+    environment: environment,
   });
 }
 

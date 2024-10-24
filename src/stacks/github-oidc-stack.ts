@@ -4,7 +4,14 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import type { Construct } from 'constructs';
 import { getGitRepositoryDetails } from '../bin/git-helper';
 
-interface GitHubOIDCStackProps extends cdk.StackProps {}
+export interface GitHubOIDCStackProps extends cdk.StackProps {
+  /**
+   * Determine the stage to which you want to deploy the stack
+   *
+   * @default - If not given, it will throw out an error
+   */
+  readonly environment: string;
+}
 
 /**
  * A CDK stack that sets up a GitHub Actions OIDC provider and a deployment role.
@@ -28,9 +35,10 @@ export class GitHubOIDCStack extends cdk.Stack {
       provider: openIdConnectProvider,
       owner: gitOwner,
       repo: gitRepoName,
+      filter: `environment:${props.environment}`,
       roleName: `${process.env.GITHUB_DEPLOY_ROLE}`,
       managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess')],
-      description: 'This role is used via GitHub Actions to deploy the AWS CDK stacks on your AWS account',
+      description: 'This role is used via GitHub Actions to deploy your AWS CDK stacks on your AWS account',
       maxSessionDuration: cdk.Duration.hours(2),
     });
 

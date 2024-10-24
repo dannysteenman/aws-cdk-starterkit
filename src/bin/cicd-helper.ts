@@ -31,9 +31,13 @@ export function createCdkDeploymentWorkflows(
   nodeVersion: string,
   deployForBranch = false,
 ) {
-  createCdkDeploymentWorkflow(gh, account, region, env, githubDeployRole, nodeVersion, deployForBranch);
+  // Always create the regular deployment workflow
+  createCdkDeploymentWorkflow(gh, account, region, env, githubDeployRole, nodeVersion, false);
 
   if (deployForBranch) {
+    // Create the branch deployment workflow
+    createCdkDeploymentWorkflow(gh, account, region, env, githubDeployRole, nodeVersion, true);
+    // Create the destroy workflow for branch deployments
     createCdkDestroyWorkflow(gh, account, region, env, githubDeployRole, nodeVersion);
   }
 }
@@ -74,20 +78,6 @@ function createCdkDeploymentWorkflow(
 
   const commonWorkflowSteps = getCommonWorkflowSteps(account, region, githubDeployRole, nodeVersion);
 
-  const dockerSetupSteps = [
-    {
-      name: 'Setup QEMU',
-      uses: 'docker/setup-qemu-action@v3',
-      with: {
-        platforms: 'arm64,amd64',
-      },
-    },
-    {
-      name: 'Setup Docker Buildx',
-      uses: 'docker/setup-buildx-action@v3',
-    },
-  ];
-
   const deploymentSteps = [
     {
       name: `Run CDK synth for the ${env.toUpperCase()} environment`,
@@ -96,9 +86,6 @@ function createCdkDeploymentWorkflow(
     {
       name: `Deploy CDK to the ${env.toUpperCase()} environment on AWS account ${account}`,
       run: deployForBranch ? `npm run branch:${env}:deploy` : `npm run ${env}:deploy`,
-      env: {
-        DOCKER_BUILDKIT: '1',
-      },
     },
   ];
 
@@ -106,8 +93,9 @@ function createCdkDeploymentWorkflow(
     deploy: {
       name: `Deploy CDK stacks to ${env} AWS account${deployForBranch ? ' (Branch)' : ''}`,
       runsOn: COMMON_RUNS_ON,
+      environment: env,
       permissions: COMMON_WORKFLOW_PERMISSIONS,
-      steps: [...commonWorkflowSteps, ...dockerSetupSteps, ...deploymentSteps],
+      steps: [...commonWorkflowSteps, ...deploymentSteps],
     },
   });
 
@@ -184,11 +172,8 @@ function createCdkDestroyWorkflow(
       name: 'Remove deployment of feature branch',
       if: "github.head_ref != 'main' || (github.event.ref_type == 'branch' && github.event_name == 'delete') || github.event_name == 'workflow_dispatch'",
       runsOn: COMMON_RUNS_ON,
-      permissions: {
-        idToken: github.workflows.JobPermission.WRITE,
-        contents: github.workflows.JobPermission.READ,
-        packages: github.workflows.JobPermission.READ,
-      },
+      environment: env,
+      permissions: COMMON_WORKFLOW_PERMISSIONS,
       steps: [...commonWorkflowSteps, ...destroySteps],
     },
   });
