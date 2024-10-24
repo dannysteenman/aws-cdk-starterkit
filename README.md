@@ -60,6 +60,7 @@ const environmentConfigs: Record<Environment, EnvironmentConfig> = {
   test: { accountId: '987654321012', enableBranchDeploy: true },
   production: { accountId: '123456789012', enableBranchDeploy: false },
 };
+```
 
 5. Run `npx projen` to generate the github actions workflow files.
 
