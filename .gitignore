@@ -63,11 +63,9 @@ venv/
 /test-reports/
 junit.xml
 /coverage/
-!/.github/workflows/build.yml
 /dist/changelog.md
 /dist/version.txt
 !/.github/workflows/release.yml
-!/.mergify.yml
 !/.github/dependabot.yml
 !/test/
 !/tsconfig.json

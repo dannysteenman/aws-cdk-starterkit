@@ -37,6 +37,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   minNodeVersion: nodeVersion,
   projenVersion: '0.88.6', // Find the latest projen version here: https://www.npmjs.com/package/projen
   projenrcTs: true,
+  buildWorkflow: false,
   release: true,
   deps: ['aws-cdk-github-oidc', 'cloudstructs'] /* Runtime dependencies of this module. */,
   pullRequestTemplate: false,
