@@ -1,10 +1,10 @@
 import * as cdk from 'aws-cdk-lib';
-import { generateUniqueResourceName } from './bin/env-helper';
-import { BaseStack, GitHubOIDCStack, ToolkitCleanerStack } from './stacks';
+import { createEnvResourceName } from './bin/env-helper';
+import { FoundationStack, StarterStack } from './stacks';
 
 // Inherit environment variables from npm run commands (displayed in .projen/tasks.json)
 const environment = process.env.ENVIRONMENT || 'dev';
-const awsEnvironment = {
+const awsAccountConfig = {
   account: process.env.CDK_DEFAULT_ACCOUNT,
   region: process.env.CDK_DEFAULT_REGION,
 };
@@ -13,32 +13,27 @@ const awsEnvironment = {
 const app = new cdk.App();
 
 /**
- * These stacks should only be deployed a single time for each AWS account,
- * and never deployed via branch-based deployments.
+ * Conditional deployment of the FoundationStack.
+ *
+ * This section of code is responsible for deploying the FoundationStack, which sets up
+ * crucial infrastructure components like GitHub OpenID Connect (OIDC) support and IAM roles
+ * for GitHub Actions deployments.
+ *
+ * @remarks
+ * - This stack should be deployed only once per AWS account.
+ * - It should not be part of branch-based deployments.
+ * - The deployment is conditional, based on the absence of the GIT_BRANCH_REF environment variable.
  */
 if (!process.env.GIT_BRANCH_REF) {
-  /**
-   * The ToolkitCleaner construct creates a state machine that runs every day
-   * and removes unused S3 and ECR assets from your CDK Toolkit.
-   * The state machine outputs the number of deleted assets and the total reclaimed size in bytes.
-   */
-  new ToolkitCleanerStack(app, generateUniqueResourceName('ToolkitCleanerStack'), {
-    env: awsEnvironment,
-  });
-  /**
-   * Add GitHub OpenID Connect support and create an IAM role for GitHub Actions deployments.
-   * This stack is only created once per AWS environment, as the GitHub OIDC provider and
-   * deployment role can be reused across all deployments for that environment.
-   */
-  new GitHubOIDCStack(app, generateUniqueResourceName('GitHubOIDCStack'), {
-    env: awsEnvironment,
+  new FoundationStack(app, createEnvResourceName('FoundationStack'), {
+    env: awsAccountConfig,
     environment: environment,
   });
 }
 
 // Create a new stack with your resources
-new BaseStack(app, generateUniqueResourceName('BaseStack'), {
-  env: awsEnvironment,
+new StarterStack(app, createEnvResourceName('StarterStack'), {
+  env: awsAccountConfig,
   environment: environment,
 });
 

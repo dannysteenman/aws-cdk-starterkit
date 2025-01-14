@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { extractCleanedBranchName, generateUniqueResourceName } from '../bin/env-helper';
+import { createEnvResourceName, extractCleanedBranchName } from '../bin/env-helper';
 
 export class BaseConstruct extends Construct {
   /**
@@ -32,8 +32,8 @@ export class BaseConstruct extends Construct {
     super(scope, id);
 
     this.branch = extractCleanedBranchName(process.env.GIT_BRANCH_REF);
-    this.environment = process.env.ENVIRONMENT || 'dev';
     this.account = cdk.Stack.of(this).account;
+    this.environment = process.env.ENVIRONMENT || 'dev';
     this.region = cdk.Stack.of(this).region;
   }
 
@@ -44,6 +44,6 @@ export class BaseConstruct extends Construct {
    * @returns A unique resource name with an optional branch suffix.
    */
   unique(name: string): string {
-    return generateUniqueResourceName(name);
+    return createEnvResourceName(name);
   }
 }
