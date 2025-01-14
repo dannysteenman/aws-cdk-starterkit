@@ -63,7 +63,8 @@ function createCdkDeploymentWorkflow(
   deployForBranch: boolean,
 ): github.GithubWorkflow {
   const workflowName = `cdk-deploy-${env}${deployForBranch ? '-branch' : ''}`;
-  const cdkDeploymentWorkflow = new github.GithubWorkflow(gh, workflowName);
+  const workflowOptions = env === 'production' ? { limitConcurrency: true } : undefined;
+  const cdkDeploymentWorkflow = new github.GithubWorkflow(gh, workflowName, workflowOptions);
 
   const workflowTriggers = {
     push: deployForBranch
@@ -205,7 +206,7 @@ function getCommonWorkflowSteps(
       uses: 'actions/setup-node@v4',
       with: {
         'node-version': nodeVersion ? `>=${nodeVersion}` : undefined,
-        'cache': 'npm',
+        cache: 'npm',
       },
     },
     {
