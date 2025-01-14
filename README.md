@@ -88,25 +88,6 @@ Here’s a closer look at how this structure enhances maintainability and scalab
 
 ```bash
 .
-├── .eslintrc.json
-├── .gitattributes
-├── .github
-│  ├── dependabot.yml
-│  └── workflows
-│     ├── auto-approve.yml
-│     ├── cdk-deploy-production.yml
-│     ├── cdk-deploy-test-branch.yml
-│     ├── cdk-deploy-test.yml
-│     ├── cdk-destroy-test-branch.yml
-│     ├── pull-request-lint.yml
-│     └── release.yml
-├── .gitignore
-├── .npmignore
-├── .projen
-│  ├── deps.json
-│  ├── files.json
-│  └── tasks.json
-├── .projenrc.ts
 ├── cdk.context.json
 ├── cdk.json
 ├── LICENSE
@@ -114,33 +95,30 @@ Here’s a closer look at how this structure enhances maintainability and scalab
 ├── package.json
 ├── README.md
 ├── src
-│  ├── assets
-│  │  ├── ecs
-│  │  │  └── example-container
-│  │  │     └── Dockerfile
-│  │  └── lambda
-│  │     └── example-lambda-function
-│  │        └── lambda_function.py
-│  ├── bin
-│  │  ├── cicd-helper.ts
-│  │  ├── env-helper.ts
-│  │  └── git-helper.ts
-│  ├── constructs
-│  │  ├── base-construct.ts
-│  │  ├── index.ts
-│  │  ├── network-construct.ts
-│  │  └── README.md
-│  ├── main.ts
-│  └── stacks
-│     ├── base-stack.ts
-│     ├── github-oidc-stack.ts
-│     ├── index.ts
-│     ├── README.md
-│     └── toolkit-cleaner-stack.ts
+│   ├── assets
+│   │   ├── ecs
+│   │   │   └── example-container
+│   │   └── lambda
+│   │       └── example-lambda-function
+│   ├── bin
+│   │   ├── cicd-helper.ts
+│   │   ├── env-helper.ts
+│   │   └── git-helper.ts
+│   ├── constructs
+│   │   ├── base-construct.ts
+│   │   ├── index.ts
+│   │   ├── network-construct.ts
+│   │   └── README.md
+│   ├── main.ts
+│   └── stacks
+│       ├── foundation-stack.ts
+│       ├── index.ts
+│       ├── README.md
+│       └── starter-stack.ts
 ├── test
-│  ├── __snapshots__
-│  │  └── main.test.ts.snap
-│  └── main.test.ts
+│   ├── __snapshots__
+│   │   └── main.test.ts.snap
+│   └── main.test.ts
 ├── tsconfig.dev.json
 └── tsconfig.json
 ```

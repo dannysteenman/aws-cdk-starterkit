@@ -37,7 +37,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   projenVersion: '0.91.6', // Find the latest projen version here: https://www.npmjs.com/package/projen
   projenrcTs: true,
   release: true,
-  deps: ['aws-cdk-github-oidc', 'cloudstructs'] /* Runtime dependencies of this module. */,
+  deps: ['cloudstructs'] /* Runtime dependencies of this module. */,
   autoApproveOptions: {
     allowedUsernames: ['dependabot', 'dependabot[bot]', 'github-bot', 'github-actions[bot]'],
     /**
