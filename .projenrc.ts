@@ -1,7 +1,6 @@
 import { awscdk } from 'projen';
 import { DependabotScheduleInterval } from 'projen/lib/github';
 import { NodePackageManager } from 'projen/lib/javascript';
-import { YamlFile } from 'projen/lib/yaml';
 import { createCdkDeploymentWorkflows } from './src/bin/cicd-helper';
 import { Environment, EnvironmentConfig, addCdkActionTask } from './src/bin/env-helper';
 
@@ -102,12 +101,6 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     'venv/',
   ],
 });
-
-// Override auto-approve workflow to use the new version when autoApproveOptions is set
-const autoApproveWorkflow = project.tryFindObjectFile('.github/workflows/auto-approve.yml');
-if (autoApproveWorkflow && autoApproveWorkflow instanceof YamlFile) {
-  autoApproveWorkflow.addOverride('jobs.approve.steps.0.uses', 'hmarr/auto-approve-action@v4');
-}
 
 // Configure the environments and their corresponding AWS account IDs
 const environmentConfigs: Partial<Record<Environment, EnvironmentConfig>> = {
