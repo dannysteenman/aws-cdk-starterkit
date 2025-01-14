@@ -1,6 +1,17 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { awscdk } from 'projen';
 
+/** Represents the possible deployment environments. */
+export type Environment = 'sandbox' | 'development' | 'test' | 'staging' | 'production';
+
+/** Configuration settings for a specific environment. */
+export interface EnvironmentConfig {
+  /** The unique identifier for the account. */
+  accountId: string;
+  /** Flag to enable or disable branch deployments. */
+  enableBranchDeploy: boolean;
+}
+
 /**
  * Adds customized 'npm run' commands for executing AWS CDK actions (synth, diff, deploy, destroy)
  * for a specific environment and branch (if applicable).

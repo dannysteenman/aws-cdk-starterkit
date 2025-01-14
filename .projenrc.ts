@@ -3,10 +3,10 @@ import { DependabotScheduleInterval } from 'projen/lib/github';
 import { NodePackageManager } from 'projen/lib/javascript';
 import { YamlFile } from 'projen/lib/yaml';
 import { createCdkDeploymentWorkflows } from './src/bin/cicd-helper';
-import { addCdkActionTask } from './src/bin/env-helper';
+import { Environment, EnvironmentConfig, addCdkActionTask } from './src/bin/env-helper';
 
 // Set the minimum node version for AWS CDK and the GitHub actions workflow
-const nodeVersion = '20.0.0';
+const nodeVersion = '20.18.1';
 
 /* Define the AWS region for the CDK app and github workflows
 Default to us-east-1 if AWS_REGION is not set in your environment variables */
@@ -109,15 +109,8 @@ if (autoApproveWorkflow && autoApproveWorkflow instanceof YamlFile) {
   autoApproveWorkflow.addOverride('jobs.approve.steps.0.uses', 'hmarr/auto-approve-action@v4');
 }
 
-// Define the target AWS accounts for the different environments
-type Environment = 'test' | 'production';
-
-interface EnvironmentConfig {
-  accountId: string;
-  enableBranchDeploy: boolean;
-}
-
-const environmentConfigs: Record<Environment, EnvironmentConfig> = {
+// Configure the environments and their corresponding AWS account IDs
+const environmentConfigs: Partial<Record<Environment, EnvironmentConfig>> = {
   test: { accountId: '987654321012', enableBranchDeploy: true },
   production: { accountId: '123456789012', enableBranchDeploy: false },
 };
@@ -126,8 +119,7 @@ const environmentConfigs: Record<Environment, EnvironmentConfig> = {
 The environment variables are passed to the CDK CLI to deploy to the correct account and region
 The `cdkDeploymentTask` function is defined in the `src/bin/helper.ts` file
 You can now run a command like: `npm run dev:synth` to synthesize your aws cdk dev stacks */
-const github = project.github;
-if (github) {
+if (project.github) {
   for (const [env, config] of Object.entries(environmentConfigs) as [Environment, EnvironmentConfig][]) {
     // Adds customized 'npm run' commands for executing cdk synth, test, deploy and diff for each environment
     addCdkActionTask(project, {
@@ -150,7 +142,7 @@ if (github) {
 
     // Adds GitHub action workflows for deploying the CDK stacks to the target AWS account
     createCdkDeploymentWorkflows(
-      github,
+      project.github,
       config.accountId,
       awsRegion,
       env,
