@@ -1,4 +1,4 @@
-import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
+import { RemovalPolicy } from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import type { Construct } from 'constructs';
@@ -31,6 +31,14 @@ export class NetworkConstruct extends BaseConstruct {
       ),
       natGateways: this.environment === 'production' ? 3 : 1,
       maxAzs: 3,
+      gatewayEndpoints: {
+        s3Endpoint: {
+          service: ec2.GatewayVpcEndpointAwsService.S3,
+        },
+        dynamoDBEndpoint: {
+          service: ec2.GatewayVpcEndpointAwsService.DYNAMODB,
+        },
+      },
       flowLogs: {
         s3: {
           destination: ec2.FlowLogDestination.toS3(
@@ -62,10 +70,6 @@ export class NetworkConstruct extends BaseConstruct {
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
         },
       ],
-    });
-
-    new CfnOutput(this, 'VpcId', {
-      value: this.vpc.vpcId,
     });
   }
 }
