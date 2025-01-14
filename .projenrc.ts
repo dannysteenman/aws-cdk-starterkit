@@ -36,10 +36,8 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   minNodeVersion: nodeVersion,
   projenVersion: '0.91.6', // Find the latest projen version here: https://www.npmjs.com/package/projen
   projenrcTs: true,
-  buildWorkflow: false,
   release: true,
   deps: ['aws-cdk-github-oidc', 'cloudstructs'] /* Runtime dependencies of this module. */,
-  pullRequestTemplate: false,
   autoApproveOptions: {
     allowedUsernames: ['dependabot', 'dependabot[bot]', 'github-bot', 'github-actions[bot]'],
     /**
@@ -61,6 +59,21 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     ignore: [{ dependencyName: 'aws-cdk-lib' }, { dependencyName: 'aws-cdk' }],
   },
   githubOptions: {
+    mergifyOptions: {
+      rules: [
+        {
+          name: 'Automatic merge for Dependabot pull requests',
+          conditions: ['author=dependabot[bot]', 'check-success=build', 'check-success=test'],
+          actions: {
+            queue: {
+              name: 'dependency-updates',
+              method: 'squash',
+              commit_message_template: '{{title}} (#{{number}})',
+            },
+          },
+        },
+      ],
+    },
     pullRequestLintOptions: {
       semanticTitleOptions: {
         types: ['feat', 'fix', 'build', 'chore', 'ci', 'docs', 'style', 'refactor'],
