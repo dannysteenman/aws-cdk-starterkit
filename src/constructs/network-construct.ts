@@ -19,9 +19,9 @@ export class NetworkConstruct extends BaseConstruct {
       this.environment === 'production'
         ? {}
         : {
-          autoDeleteObjects: true,
-          removalPolicy: RemovalPolicy.DESTROY,
-        };
+            autoDeleteObjects: true,
+            removalPolicy: RemovalPolicy.DESTROY,
+          };
 
     // Create a VPC with 9 subnets divided over 3 AZ's (3 public, 3 private, 3 isolated)
     this.vpc = new ec2.Vpc(this, 'Vpc', {
