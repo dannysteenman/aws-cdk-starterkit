@@ -38,6 +38,21 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   projenrcTs: true,
   release: true,
   deps: ['cloudstructs'] /* Runtime dependencies of this module. */,
+  prettier: true,
+  prettierOptions: {
+    settings: {
+      jsxSingleQuote: true,
+      singleQuote: true,
+      printWidth: 120,
+    },
+  },
+  eslintOptions: {
+    prettier: true,
+    dirs: ['src', 'test'],
+    commandOptions: {
+      fix: true,
+    },
+  },
   autoApproveOptions: {
     allowedUsernames: ['dependabot', 'dependabot[bot]', 'github-bot', 'github-actions[bot]'],
     /**
